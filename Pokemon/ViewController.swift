@@ -11,10 +11,6 @@ class ViewController: UIViewController {
     
     let mainTabBarController = UITabBarController()
 
-    
-    
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
        
@@ -27,17 +23,20 @@ class ViewController: UIViewController {
         
     }
     
-    
+  
     func setupTabBarController() {
-        mainTabBarController.tabBar.backgroundColor = .darkGray
-        mainTabBarController.tabBar.tintColor = .white
-          let pokemonsViewController = UINavigationController(rootViewController: PokemonsViewController())
-          let favoritePokemonsViewController = UINavigationController(rootViewController: FavoritePokemonsViewController())
-        mainTabBarController.setViewControllers([pokemonsViewController, favoritePokemonsViewController], animated: false)
-        mainTabBarController.modalPresentationStyle = .fullScreen
-          present(mainTabBarController, animated: true)
-      }
+       
+            mainTabBarController.tabBar.backgroundColor = .darkGray
+            mainTabBarController.tabBar.tintColor = .white
+            let pokemonsViewController = UINavigationController(rootViewController: PokemonsViewController())
+            let favoritePokemonsViewController = UINavigationController(rootViewController: FavoritePokemonsViewController())
+       
+            mainTabBarController.setViewControllers([pokemonsViewController, favoritePokemonsViewController], animated: false)
+            mainTabBarController.modalPresentationStyle = .fullScreen
+            present(mainTabBarController, animated: true)
+        }
+    }
     
 
-}
+
 
