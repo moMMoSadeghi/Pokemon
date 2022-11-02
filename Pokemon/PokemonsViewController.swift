@@ -7,23 +7,50 @@
 
 import UIKit
 
-class PokemonsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+// All the tasks (Methods) will be moved to the main thread
+@MainActor class PokemonsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
    
     
     var pokemons = [PokemonDataModel]()
+    var selectedPokemonName = ""
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        pokemonsTableView.delegate = self
+        pokemonsTableView.dataSource = self
         self.title = "Pokemons"
-        setupPokemonsTableView()
+        navigationItem.titleView = pokemonSearchBar
+        setupPokemonsTableViewConstraint()
+        fetchPokemons()
       
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
        
-        
     }
+    
+    func fetchPokemons()  {
+        URLSession.shared.request(url: Constants.pokemonsURL, expecting: ResourceDataModel.self){
+            [weak self] result in
+            print(result)
+            switch result {
+            case .success(let receivedData):
+                self?.pokemons = receivedData.results
+            case .failure(let error):
+                print(error)
+
+            }
+        }
+    }
+    
+    private let pokemonSearchBar : UISearchBar = {
+        let searchBar = UISearchBar()
+        searchBar.placeholder = "Search Pokemons"
+        searchBar.sizeToFit()
+        return searchBar
+    }()
     
     
     private let pokemonsTableView : UITableView = {
@@ -32,9 +59,7 @@ class PokemonsViewController: UIViewController, UITableViewDelegate, UITableView
         return table
     }()
     
-    private func setupPokemonsTableView() {
-        pokemonsTableView.delegate = self
-        pokemonsTableView.dataSource = self
+    private func setupPokemonsTableViewConstraint() {
         view.addSubview(pokemonsTableView)
         pokemonsTableView.translatesAutoresizingMaskIntoConstraints = false
         pokemonsTableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
@@ -46,18 +71,26 @@ class PokemonsViewController: UIViewController, UITableViewDelegate, UITableView
     
 //    TableViewCell counter
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-       return 10
+        return 1000
     }
     
 //    TableViewCell data
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.pokemonCellIdentifier, for: indexPath) as? PokemonCell else { return UITableViewCell() }
-        cell.fillPokemonData(pokName: pokemons[indexPath.row].name, pokImg: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/2.png")
+        cell.fillPokemonData(pokName: "The NAME", pokImg: "2")
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 300
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        selectedPokemonName = pokemons[indexPath.row].name
+        tableView.deselectRow(at: indexPath, animated: true)
+        let detailsViewController = DetailsPokemonViewController()
+        detailsViewController.pokemonSelected = selectedPokemonName
+        self.present(detailsViewController, animated: true)
     }
 
 }

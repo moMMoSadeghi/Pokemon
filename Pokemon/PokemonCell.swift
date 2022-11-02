@@ -9,7 +9,7 @@ import UIKit
 
 class PokemonCell: UITableViewCell {
     
-    let cellColors = [UIColor.red, UIColor.blue, UIColor.green, UIColor.orange]
+    let cellColors = [UIColor.systemRed, UIColor.systemBlue, UIColor.systemGreen, UIColor.systemOrange]
     
     
     //    Pokemon Image in the Cell
@@ -20,7 +20,7 @@ class PokemonCell: UITableViewCell {
         image.layer.cornerRadius = (image.frame.size.width ) / 2
         image.layer.borderWidth = 3.0
         image.backgroundColor = .white
-        image.layer.borderColor = UIColor.white.cgColor
+        image.layer.borderColor = UIColor.green.cgColor
         return image
     }()
     
@@ -52,7 +52,6 @@ class PokemonCell: UITableViewCell {
         
         contentView.layer.cornerRadius = 20
         contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
-        
         pokImageConstraint()
         pokNumLableConstraint()
         pokNameLableConstraint()
@@ -106,6 +105,7 @@ class PokemonCell: UITableViewCell {
         contentView.addSubview(pokImage)
         contentView.addSubview(pokNumLable)
         contentView.addSubview(pokNameLable)
+        contentView.backgroundColor = cellColors.randomElement()
     }
     
     required init?(coder: NSCoder) {
@@ -115,14 +115,12 @@ class PokemonCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        contentView.backgroundColor = cellColors.randomElement()
         
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         
-        // Configure the view for the selected state
     }
     
 }
