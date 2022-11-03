@@ -162,7 +162,8 @@ class DetailsPokemonViewController: UIViewController {
     private let hpProgressBar :  UIProgressView = {
         let progressBar = UIProgressView()
         progressBar.progressViewStyle = .bar
-        progressBar.transform = CGAffineTransformMakeScale(1, 4)
+        progressBar.transform = progressBar.transform.scaledBy(x: 1, y: 4)
+        progressBar.translatesAutoresizingMaskIntoConstraints = false
         progressBar.setProgress(0.5, animated: true)
         progressBar.trackTintColor = .darkGray
         progressBar.tintColor = .green

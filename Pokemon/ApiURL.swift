@@ -12,5 +12,5 @@ import Foundation
 struct ApiURL {
     
     static let baseUrl = "myDummyURL"
-
+    
 }

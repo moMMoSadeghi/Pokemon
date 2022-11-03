@@ -7,14 +7,39 @@
 
 import UIKit
 
+extension Thread {
+
+    var threadName: String {
+        if let currentOperationQueue = OperationQueue.current?.name {
+            return "OperationQueue: \(currentOperationQueue)"
+        } else if let underlyingDispatchQueue = OperationQueue.current?.underlyingQueue?.label {
+            return "DispatchQueue: \(underlyingDispatchQueue)"
+        } else {
+            let name = __dispatch_queue_get_label(nil)
+            return String(cString: name, encoding: .utf8) ?? Thread.current.description
+        }
+    }
+}
+
+
 // All the tasks (Methods) will be moved to the main thread
 @MainActor class PokemonsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
    
     
     var pokemons = [PokemonDataModel]()
+    var pokemonImageURL = [PokemonSprites]()
     var selectedPokemonName = ""
+    var viewModel : PokemonsViewModel!
     
-
+    init(viewModel : PokemonsViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         pokemonsTableView.delegate = self
@@ -32,18 +57,44 @@ import UIKit
     }
     
     func fetchPokemons()  {
-        URLSession.shared.request(url: Constants.pokemonsURL, expecting: ResourceDataModel.self){
+        URLSession.shared.request(url: Constants.basePokemonsURL, expecting: ResourceDataModel.self){
             [weak self] result in
+//            print(Thread.current.name)
             print(result)
             switch result {
             case .success(let receivedData):
-                self?.pokemons = receivedData.results
+                DispatchQueue.main.async {
+                    self?.pokemons = receivedData.results
+                    self?.pokemonsTableView.reloadData()
+                }
+              
             case .failure(let error):
                 print(error)
 
             }
         }
     }
+    
+    
+    func fetchPokemonImage()  {
+        URLSession.shared.request(url: Constants.basePokemonsURL, expecting: PokemonSprites.self){
+            [weak self] result in
+//            print(Thread.current.name)
+            print(result)
+            switch result {
+            case .success(let receivedData):
+                DispatchQueue.main.async {
+                    self?.pokemonImageURL = receivedData.sprites
+                    self?.pokemonsTableView.reloadData()
+                }
+              
+            case .failure(let error):
+                print(error)
+
+            }
+        }
+    }
+    
     
     private let pokemonSearchBar : UISearchBar = {
         let searchBar = UISearchBar()
@@ -71,13 +122,13 @@ import UIKit
     
 //    TableViewCell counter
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1000
+        return pokemons.count
     }
     
 //    TableViewCell data
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.pokemonCellIdentifier, for: indexPath) as? PokemonCell else { return UITableViewCell() }
-        cell.fillPokemonData(pokName: "The NAME", pokImg: "2")
+        cell.fillPokemonData(pokName: pokemons[indexPath.row].name, pokImg: "2")
         return cell
     }
     
