@@ -12,9 +12,13 @@ import Foundation
 struct Constants {
     
 //    URLs
-    static let basePokemonsURL = URL(string:"https://pokeapi.co/api/v2/pokemon?limit=151")
-    static let basePokemonsStringURL = "https://pokeapi.co/api/v2/pokemon?limit=151"
-    static let basePokemonsImageURL = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"
+    static let pokemonsViewControllerLimit50 = URL(string: "https://pokeapi.co/api/v2/pokemon?limit=50")
+    static let detailsPokemonViewController = URL(string: "https://pokeapi.co/api/v2/pokemon-form/1/")
+    static let pokPok = "https://pokeapi.co/api/v2/pokemon/1/"
+    
+    
+    
+    
     
 //    Cell Identifiers
     static let pokemonCellIdentifier = "PokemonCell"

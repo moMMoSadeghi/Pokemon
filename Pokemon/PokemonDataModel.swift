@@ -10,7 +10,10 @@ import Foundation
 
 
 struct PokemonDataModel : Codable {
-//    var id = UUID()
     var name : String
     var url : String
 }
+
+
+
+

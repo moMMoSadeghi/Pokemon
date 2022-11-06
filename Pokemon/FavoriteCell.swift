@@ -7,9 +7,14 @@
 
 import UIKit
 
-class FavoriteCell: UITableViewCell {
+class FavoriteCell: UITableViewCell, DetailsPokemonViewControllerDelegate {
+   
+    
+    
+    var detailsPokemonViewController = DetailsPokemonViewController()
 
-    private let cellColors = [UIColor.systemRed, UIColor.systemBlue, UIColor.systemGreen, UIColor.systemOrange]
+    
+    private let cellColors = [UIColor(red: 0.2, green: 0.3, blue: 0.2, alpha: 0.4), UIColor(red: 0.6, green: 0.2, blue: 0.5, alpha: 0.4), UIColor(red: 0.3, green: 0.2, blue: 0.7, alpha: 0.4), UIColor(red: 0.5, green: 0.1, blue: 0.5, alpha: 0.4), UIColor(red: 0.4, green: 0.2, blue: 0.3, alpha: 0.4)]
     private let favoriteCellStackView = UIStackView()
     
     private func configureMainStackView() {
@@ -53,6 +58,7 @@ class FavoriteCell: UITableViewCell {
         return image
     }()
     
+   
     
 //    Pokemon Number lable in the Cell
     private let favoritePokemonName : UILabel = {
@@ -63,11 +69,12 @@ class FavoriteCell: UITableViewCell {
         return lable
     }()
     
+    
     private func favoritePokemonImageConstraint() {
         favoritePokemonImage.translatesAutoresizingMaskIntoConstraints = false
-        favoritePokemonImage.topAnchor.constraint(equalTo: favoriteCellStackView.topAnchor, constant: 5).isActive = true
-        favoritePokemonImage.bottomAnchor.constraint(equalTo: favoriteCellStackView.bottomAnchor, constant: -5).isActive = true
-        favoritePokemonImage.leadingAnchor.constraint(equalTo: favoriteCellStackView.leadingAnchor, constant: 5).isActive = true
+//        favoritePokemonImage.topAnchor.constraint(equalTo: favoriteCellStackView.topAnchor, constant: 5).isActive = true
+//        favoritePokemonImage.bottomAnchor.constraint(equalTo: favoriteCellStackView.bottomAnchor, constant: -5).isActive = true
+//        favoritePokemonImage.leadingAnchor.constraint(equalTo: favoriteCellStackView.leadingAnchor, constant: 5).isActive = true
         favoritePokemonImage.widthAnchor.constraint(greaterThanOrEqualToConstant: 120).isActive = true
         favoritePokemonImage.heightAnchor.constraint(equalTo: favoritePokemonImage.widthAnchor).isActive = true
        
@@ -76,16 +83,22 @@ class FavoriteCell: UITableViewCell {
     private func favoritePokemonNameLableConstraint() {
         
         favoritePokemonName.translatesAutoresizingMaskIntoConstraints = false
-        favoritePokemonName.topAnchor.constraint(equalTo: favoriteCellStackView.topAnchor, constant: 2).isActive = true
-        favoritePokemonName.bottomAnchor.constraint(equalTo: favoriteCellStackView.bottomAnchor, constant: 2).isActive = true
-        favoritePokemonName.leadingAnchor.constraint(equalTo: favoritePokemonImage.trailingAnchor, constant: 2).isActive = true
-        favoritePokemonName.trailingAnchor.constraint(equalTo: favoriteCellStackView.trailingAnchor, constant: 2).isActive = true
+//        favoritePokemonName.topAnchor.constraint(equalTo: favoriteCellStackView.topAnchor, constant: 2).isActive = true
+//        favoritePokemonName.bottomAnchor.constraint(equalTo: favoriteCellStackView.bottomAnchor, constant: 2).isActive = true
+//        favoritePokemonName.leadingAnchor.constraint(equalTo: favoritePokemonImage.trailingAnchor, constant: 2).isActive = true
+//        favoritePokemonName.trailingAnchor.constraint(equalTo: favoriteCellStackView.trailingAnchor, constant: 2).isActive = true
 //        favoritePokemonName.widthAnchor.constraint(greaterThanOrEqualToConstant: 200).isActive = true
 //        favoritePokemonName.heightAnchor.constraint(equalTo: favoritePokemonImage.widthAnchor).isActive = true
     }
     
+    func didSendFavoritePokemon(favoritePokemon: FavoritePokemonModel) {
+        favoritePokemonImage.image = UIImage(named: favoritePokemon.image) 
+        favoritePokemonName.text = favoritePokemon.name
+    }
+    
 
     
+//    Delegate Method comes from the Protocol to receive the pokemon coming from the DetailsPokemonViewController
     func fillFavoritePokemonData(pokImg : String, pokName : String) {
         favoritePokemonImage.image = UIImage(named: "2")
         favoritePokemonName.text = pokName
@@ -105,6 +118,7 @@ class FavoriteCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configureMainStackView()
+        detailsPokemonViewController.delegate = self
         contentView.backgroundColor = cellColors.randomElement()
        
        

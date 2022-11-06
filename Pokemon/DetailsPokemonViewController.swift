@@ -7,30 +7,69 @@
 
 import UIKit
 
+
+
+protocol DetailsPokemonViewControllerDelegate {
+    func didSendFavoritePokemon(favoritePokemon : FavoritePokemonModel)
+}
+
+
+
 class DetailsPokemonViewController: UIViewController {
     
     
-    var pokemonSelected = ""
-    private let detailsScrollView = UIScrollView()
-    private let pokemonProfileView = UIView()
-    private let pokemonDetailsStackView = UIStackView()
-   
     
+    private let detailsScrollView              = UIScrollView()
+    private let pokemonProfileView             = UIView()
+    private let pokemonDetailsStackView        = UIStackView()
+//    var pokemonSelected                        = ""
+    var delegate                               : DetailsPokemonViewControllerDelegate?
+    var pokemon                                : PokemonDataModel
+    var id                                     : Int
     
+    init(pokemon : PokemonDataModel, id : Int) {
+        self.pokemon = pokemon
+        self.id = id
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
+        self.title = "Pokemon Details"
+//        let favoriteRightNavBarButtonItem  =  UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addToFavoritePokemons))
+//        navigationItem.rightBarButtonItem = favoriteRightNavBarButtonItem
+        navigationController?.navigationBar.tintColor = .yellow
         configurePokemonDetailsScrollView()
         configurePokemonProfileUIView()
         configureDetailsStackView()
- 
+        
     }
+    
+    
+//    private func setupNavBarButtonItem () {
+//        navigationController?.navigationBar.topItem?.rightBarButtonItem = favoriteRightNavBarButtonItem
+//    }
+    @objc func addTapped() {
+        
+    }
+    
+    
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         selectedPokemonImageConstraint()
         selectedPokemonNameLableConstraint()
+    }
+    
+   
+    
+    @objc func addToFavoritePokemons() {
+        
     }
     
     
@@ -45,7 +84,7 @@ class DetailsPokemonViewController: UIViewController {
 //    Configuring DetailsScrollView Constraint
     private func setupPokemonDetailsScrollViewConstraint() {
         detailsScrollView.translatesAutoresizingMaskIntoConstraints = false
-        detailsScrollView.topAnchor.constraint(equalTo: view.topAnchor, constant: 5).isActive = true
+        detailsScrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5).isActive = true
         detailsScrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         detailsScrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         detailsScrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
@@ -236,7 +275,8 @@ class DetailsPokemonViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        view.layer.cornerRadius = 15        
+        view.layer.cornerRadius = 15
+
     }
     
     

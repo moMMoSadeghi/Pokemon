@@ -7,42 +7,65 @@
 
 import UIKit
 
-class FavoritePokemonsViewController: UIViewController, UITabBarDelegate, UITableViewDataSource, UITableViewDelegate {
-   
+
+class FavoritePokemonsViewController: UIViewController, UITabBarDelegate, UITableViewDataSource, UITableViewDelegate  {
+    
+    
+    
     
    
-    
+//    var detailsPokemonViewController = DetailsPokemonViewController()
     var favoritePokemons = [FavoritePokemonModel]()
     var fakePokemons = ["A", "B", "C"]
+    
+    
+    private let favoritePokemonImage : UIImageView = {
+        let image = UIImageView(frame: CGRectMake(0, 0, 100, 100))
+        image.contentMode = .scaleAspectFit
+        image.clipsToBounds = false
+        image.layer.cornerRadius = (image.frame.size.width ) / 2
+        image.layer.borderWidth = 3.0
+        image.backgroundColor = .white
+        image.layer.borderColor = UIColor.green.cgColor
+        return image
+    }()
+   
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Favorite Pokemons"
         setupFavoritePokemonsTableView()
         
+
+    }
+    
+    func didSendFavoritePokemon(favoritePokemon: FavoritePokemonModel) {
+        favoritePokemonImage.image = UIImage(named: favoritePokemon.image)
+//        pokNameLable.text = favoritePokemon.name
     }
     
     
-    private let favoriteTableView : UITableView = {
+    
+    private let favoritePokemonTableView : UITableView = {
         let table = UITableView()
         table.register(FavoriteCell.self, forCellReuseIdentifier: Constants.favoritePokemonCellIdentifier)
         return table
     }()
     
     private func setupFavoritePokemonsTableViewConstraint() {
-        favoriteTableView.translatesAutoresizingMaskIntoConstraints = false
-        favoriteTableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        favoriteTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -10).isActive = true
-        favoriteTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 10).isActive = true
-        favoriteTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: -10).isActive = true
+        favoritePokemonTableView.translatesAutoresizingMaskIntoConstraints = false
+        favoritePokemonTableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        favoritePokemonTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -10).isActive = true
+        favoritePokemonTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 10).isActive = true
+        favoritePokemonTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: -10).isActive = true
        
     }
     
     private func setupFavoritePokemonsTableView() {
-        view.addSubview(favoriteTableView)
+        view.addSubview(favoritePokemonTableView)
         setupFavoritePokemonsTableViewConstraint()
-        favoriteTableView.delegate = self
-        favoriteTableView.dataSource = self
+        favoritePokemonTableView.delegate = self
+        favoritePokemonTableView.dataSource = self
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

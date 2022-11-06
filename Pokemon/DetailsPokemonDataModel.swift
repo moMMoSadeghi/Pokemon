@@ -1,5 +1,5 @@
 //
-//  PokemonSelected.swift
+//  PokemonDataModel.swift
 //  Pokemon
 //
 //  Created by iMommo on 03/11/22.
@@ -9,12 +9,11 @@ import Foundation
 
 
 
-struct SelectedPokemonDataModel : Codable {
+struct DetailsPokemonDataModel : Codable {
     var sprites : PokemonSprites
-    var weight : Int
+    var order : Int
 }
 
-
 struct PokemonSprites : Codable {
-    var front_default : String
+    var front_default : String?
 }
