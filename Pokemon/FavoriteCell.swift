@@ -11,10 +11,11 @@ class FavoriteCell: UITableViewCell, DetailsPokemonViewControllerDelegate {
    
     
     
-    var detailsPokemonViewController = DetailsPokemonViewController()
+//    var detailsPokemonViewController = DetailsPokemonViewController()
 
     
     private let cellColors = [UIColor(red: 0.2, green: 0.3, blue: 0.2, alpha: 0.4), UIColor(red: 0.6, green: 0.2, blue: 0.5, alpha: 0.4), UIColor(red: 0.3, green: 0.2, blue: 0.7, alpha: 0.4), UIColor(red: 0.5, green: 0.1, blue: 0.5, alpha: 0.4), UIColor(red: 0.4, green: 0.2, blue: 0.3, alpha: 0.4)]
+    
     private let favoriteCellStackView = UIStackView()
     
     private func configureMainStackView() {
@@ -118,7 +119,7 @@ class FavoriteCell: UITableViewCell, DetailsPokemonViewControllerDelegate {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configureMainStackView()
-        detailsPokemonViewController.delegate = self
+//        detailsPokemonViewController.delegate = self
         contentView.backgroundColor = cellColors.randomElement()
        
        

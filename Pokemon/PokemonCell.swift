@@ -10,38 +10,31 @@ import Kingfisher
 
 class PokemonCell: UITableViewCell {
     
-    let cellColors = [UIColor.systemRed, UIColor.systemBlue, UIColor.systemGreen, UIColor.systemOrange]
+    let cellColors = [UIColor(red: 255, green: 143, blue: 177, alpha: 0.4), UIColor(red: 0.6, green: 0.2, blue: 0.5, alpha: 0.4), UIColor(red: 0.3, green: 0.2, blue: 0.7, alpha: 0.4), UIColor(red: 0.5, green: 0.1, blue: 0.5, alpha: 0.4), UIColor(red: 0.4, green: 0.2, blue: 0.3, alpha: 0.4), UIColor(red: 0.2, green: 0.3, blue: 0.2, alpha: 0.4)]
+    
+    
     
     
     //    Pokemon Image in the Cell
-    private let pokImage : UIImageView = {
-        let image = UIImageView(frame: CGRectMake(0, 0, 100, 100))
-        image.contentMode = .scaleAspectFit
-        image.clipsToBounds = false
-        image.layer.cornerRadius = (image.frame.size.width ) / 2
-        image.layer.borderWidth = 3.0
-        image.backgroundColor = UIColor(red: 0.6, green: 0.2, blue: 0.5, alpha: 0.4)
-        image.layer.borderColor = UIColor.green.cgColor
+    private lazy var pokImage       : UIImageView = {
+        let image                   = UIImageView(frame: CGRectMake(0, 0, 100, 100))
+        image.contentMode           = .scaleAspectFit
+        image.clipsToBounds         = false
+        image.layer.cornerRadius    = (image.frame.size.width ) / 2
+        image.layer.borderWidth     = 3.0
+        image.backgroundColor       = UIColor(red: 0.6, green: 0.2, blue: 0.5, alpha: 0.4)
+        image.layer.borderColor     = UIColor.green.cgColor
         return image
     }()
     
-    
-    //    Pokemon Number lable in the Cell
-    //    private let pokNumLable : UILabel = {
-    //        let lable = UILabel()
-    //        lable.textColor = .white
-    //        lable.text = "#222"
-    //        lable.textAlignment = .center
-    //        lable.font = .systemFont(ofSize: 25)
-    //        return lable
-    //    }()
+
     
     //    Pokemon Name lable in the Cell
-    private let pokNameLable : UILabel = {
-        let lable = UILabel()
-        lable.textColor = .white
-        lable.textAlignment = .center
-        lable.font = .systemFont(ofSize: 25)
+    private lazy var pokNameLable   : UILabel = {
+        let lable                   = UILabel()
+        lable.textColor             = .white
+        lable.textAlignment         = .center
+        lable.font                  = .systemFont(ofSize: 25)
         return lable
     }()
     
@@ -61,22 +54,16 @@ class PokemonCell: UITableViewCell {
     
     func fillPokemonsData(pokName : String, pokID: String) {
         pokNameLable.text = pokName
-        pokImage.kf.setImage(with: URL(string: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/\(pokID).png"), placeholder: nil, options: nil, progressBlock: nil, completionHandler: { result in
-        switch result {
-            case .success(let value):
-                        print("Image: \(value.image). Got from: \(value.cacheType)")
-            case .failure(let error):
-                        print("Error: \(error)")
-            }
-        })
-    }
-    
-    func fillPokemonsNameData(pokName : String) {
-        pokNameLable.text = pokName
-    }
-    
-    func fillPokemonsImageData(pokImage : String) {
-        self.pokImage.image = UIImage(named: pokImage)
+        pokImage.kf.setImage(with: URL(string: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/\(pokID).png"), placeholder: nil, options: nil, progressBlock: nil, completionHandler: nil
+//                             { result in
+//            switch result {
+//            case .success(let value):
+//                    print("Image: \(value.image). Got from: \(value.cacheType)")
+//            case .failure(let error):
+//                    print("Error: \(error)")
+//            }
+//        }
+        )
     }
     
     
@@ -87,23 +74,11 @@ class PokemonCell: UITableViewCell {
         pokImage.translatesAutoresizingMaskIntoConstraints = false
         pokImage.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
         pokImage.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 30).isActive = true
-        //        pokImage.bottomAnchor.constraint(equalTo: pokNumLable.topAnchor, constant: 10).isActive = true
         pokImage.widthAnchor.constraint(greaterThanOrEqualTo: contentView.heightAnchor, multiplier: 0.6).isActive = true
         pokImage.heightAnchor.constraint(equalTo: pokImage.widthAnchor).isActive = true
     }
     
     
-    
-    //    Set Pokemon Number Lable Constraint
-    //    private func pokNumLableConstraint() {
-    //
-    //        pokNumLable.translatesAutoresizingMaskIntoConstraints = false
-    //        pokNumLable.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
-    //        pokNumLable.topAnchor.constraint(greaterThanOrEqualTo: pokImage.bottomAnchor, constant: 1).isActive = true
-    //        pokNumLable.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.3).isActive = true
-    //        pokNumLable.heightAnchor.constraint(equalTo: pokNumLable.widthAnchor).isActive = true
-    //    }
-    //
     
     //    Set Pokemon Name Lable Constraint
     private func pokNameLableConstraint() {
@@ -119,7 +94,6 @@ class PokemonCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.addSubview(pokImage)
-        //        contentView.addSubview(pokNumLable)
         contentView.addSubview(pokNameLable)
         contentView.backgroundColor = cellColors.randomElement()
     }
@@ -142,22 +116,6 @@ class PokemonCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
         
     }
-    
-    
-    func configureCell(urlString : String) {
-        guard let url = URL(string: urlString)  else { return }
-        let task = URLSession.shared.dataTask(with: url) { [weak self] imageData, _, err in
-            if let error = err {
-                print(error.localizedDescription)
-            } else {
-                guard let correctImageData = imageData else { return }
-                DispatchQueue.main.async {
-                    let image = UIImage(data: correctImageData)
-                    self?.pokImage.image = image
-                }
-            }
-        }
-        task.resume()
-    }
+
     
 }

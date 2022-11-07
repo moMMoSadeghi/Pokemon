@@ -10,10 +10,13 @@ import Foundation
 
 
 class PokemonsViewModel {
+    
+    let networkManager : NetworkManager
+    
     init(networkManaget : NetworkManager){
         self.networkManager = networkManaget
     }
-    let networkManager : NetworkManager
+    
     
     
 //    func fetchPokemons()  {
