@@ -16,7 +16,7 @@ class FavoritePokemonsViewController: UIViewController, UITabBarDelegate, UITabl
    
 //    var detailsPokemonViewController = DetailsPokemonViewController()
     var favoritePokemons = [FavoritePokemonModel]()
-    var fakePokemons = ["A", "B", "C"]
+    var fakePokemons = ["A"]
     
     
     private let favoritePokemonImage : UIImageView = {

@@ -12,9 +12,9 @@ import Foundation
 struct Constants {
     
 //    URLs
-    static let pokemonsViewControllerLimit50 = URL(string: "https://pokeapi.co/api/v2/pokemon?limit=50")
+    static let pokemonsViewControllerLimit50 = URL(string: "https://pokeapi.co/api/v2/pokemon?limit=999")
     static let detailsPokemonViewController = URL(string: "https://pokeapi.co/api/v2/pokemon-form/1/")
-    static let pokPok = "https://pokeapi.co/api/v2/pokemon/1/"
+    static let pokPok = URL(string:"https://pokeapi.co/api/v2/pokemon/")
     
     
     

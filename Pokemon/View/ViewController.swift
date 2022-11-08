@@ -9,7 +9,7 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    let networkManager = NetworkManager()
+//    let networkManager = NetworkManager()
     let mainTabBarController = UITabBarController()
     
     override func viewDidLoad() {
@@ -26,15 +26,15 @@ class ViewController: UIViewController {
     
     
     private func configureTabBarController() {
-        mainTabBarController.tabBar.backgroundColor = .darkGray
+        mainTabBarController.tabBar.backgroundColor = .systemGray5
         mainTabBarController.tabBar.tintColor = .white
     }
     
     private func setupTabBarController() {
         
-        let viewModel = PokemonsViewModel(networkManaget: networkManager)
+//        let viewModel = PokemonsViewModel(networkManaget: networkManager)
         
-        let pokemonsViewController = UINavigationController(rootViewController: PokemonsViewController(viewModel: viewModel))
+        let pokemonsViewController = UINavigationController(rootViewController: PokemonsViewController())
         pokemonsViewController.tabBarItem.image = UIImage(systemName: "folder")
         pokemonsViewController.tabBarItem.title = "Pokemons"
         pokemonsViewController.tabBarItem.selectedImage = UIImage(systemName: "folder.fill")

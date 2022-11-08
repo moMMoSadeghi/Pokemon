@@ -10,7 +10,7 @@ import Kingfisher
 
 class PokemonCell: UITableViewCell {
     
-    let cellColors = [UIColor(red: 255, green: 143, blue: 177, alpha: 0.4), UIColor(red: 0.6, green: 0.2, blue: 0.5, alpha: 0.4), UIColor(red: 0.3, green: 0.2, blue: 0.7, alpha: 0.4), UIColor(red: 0.5, green: 0.1, blue: 0.5, alpha: 0.4), UIColor(red: 0.4, green: 0.2, blue: 0.3, alpha: 0.4), UIColor(red: 0.2, green: 0.3, blue: 0.2, alpha: 0.4)]
+   
     
     
     
@@ -95,7 +95,7 @@ class PokemonCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.addSubview(pokImage)
         contentView.addSubview(pokNameLable)
-        contentView.backgroundColor = cellColors.randomElement()
+        contentView.backgroundColor = Colors.cellColors.randomElement()
     }
     
     required init?(coder: NSCoder) {

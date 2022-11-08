@@ -16,11 +16,15 @@ class PokemonsViewController: UIViewController, UISearchBarDelegate {
     
     let searchController    = UISearchController(searchResultsController: nil)
     var pokemonsData        = [PokemonDataModel]()
-    var viewModel           : PokemonsViewModel!
+    //    var viewModel           : PokemonsViewModel!
     var delegate            : DetailsPokemonViewControllerDelegate?
+    //    var pokemonsViewModel   = PokemonsViewModel(pokemonsData: <#PokemonDataModel#>)
     
-    init(viewModel : PokemonsViewModel) {
-        self.viewModel = viewModel
+    
+    init() {
+        //        init(viewModel : PokemonsViewModel) {
+        //            self.viewModel = viewModel
+        
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -50,6 +54,7 @@ class PokemonsViewController: UIViewController, UISearchBarDelegate {
         configureCollectionView()
         setupPokemonsTableViewConstraint()
         fetchPokemonsData()
+        //        pokemonsViewModel.fetchPokemonsData()
     }
     
     override func viewDidLayoutSubviews() {
@@ -64,15 +69,7 @@ class PokemonsViewController: UIViewController, UISearchBarDelegate {
         pokemonsTableView.dataSource = self
     }
     
-    func searchBarClicked(_ searchBar : UISearchBar) {
-        searchBar.resignFirstResponder()
-        if let pokemonText = searchBar.text {
-            pokemonsData = []
-            pokemonsTableView.reloadData()
-            fetchPokemonsData()
-            
-        }
-    }
+    
     
     
     //MARK: -   UI Outlets
@@ -98,9 +95,11 @@ class PokemonsViewController: UIViewController, UISearchBarDelegate {
     
     
     
-    
+    //MARK: -   Methods
+
     
     //    Fetching Pokemons Data
+    
     func fetchPokemonsData()  {
         URLSession.shared.request(url: Constants.pokemonsViewControllerLimit50, expecting: ResourceDataModel.self){
             [weak self] result in
@@ -115,12 +114,49 @@ class PokemonsViewController: UIViewController, UISearchBarDelegate {
             }
         }
     }
+    
+    
+    
+    //MARK: - Search Bar
+    
+    
+    func searchBarClicked(_ searchBar : UISearchBar) {
+        searchBar.resignFirstResponder()
+        if let pokemonText = searchBar.text {
+            pokemonsData = []
+            pokemonsTableView.reloadData()
+            //            pokemonsViewModel.fetchPokemonsData()
+            
+        }
+    }
+    
+    //    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+    //        filteredList = []
+    //        if searchText == "" {
+    //            filteredList = mainViewModel.pokemonList
+    //            backgroundOfImageView.removeFromSuperview()
+    //            collectionView.isHidden = false
+    //        } else {
+    //            for poke in mainViewModel.pokemonList {
+    //                if poke.name.lowercased().contains(searchText.lowercased()) {
+    //                    self.showImageView(isSearchNil: false)
+    //                    filteredList.append(poke)
+    //                } else if searchText.count > 2{
+    //                    self.showImageView(isSearchNil: true)
+    //                }
+    //            }
+    //        }
+    //        self.collectionView.reloadData()
+    //    }
+    
+    
 }
 
-// Configuring UI
+//MARK: - Setting Pokemon TableView Constraint
+
+
 extension PokemonsViewController {
     
-    //    Setting Pokemon TableView Constraint
     private func setupPokemonsTableViewConstraint() {
         view.addSubview(pokemonsTableView)
         pokemonsTableView.translatesAutoresizingMaskIntoConstraints = false
@@ -130,7 +166,6 @@ extension PokemonsViewController {
         pokemonsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: -10).isActive = true
     }
 }
-
 
 
 //MARK: - TableView Extensions
@@ -164,6 +199,4 @@ extension PokemonsViewController : UITableViewDelegate, UITableViewDataSource {
         self.present(detailsViewController, animated: true)
     }
 }
-
-//MARK: - Search Bar
 

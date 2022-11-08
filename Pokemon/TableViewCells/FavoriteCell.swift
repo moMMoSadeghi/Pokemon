@@ -21,7 +21,7 @@ class FavoriteCell: UITableViewCell, DetailsPokemonViewControllerDelegate {
     private func configureMainStackView() {
         contentView.addSubview(favoriteCellStackView)
         favoriteCellStackView.axis = .horizontal
-        favoriteCellStackView.distribution = .fill
+        favoriteCellStackView.distribution = .fillEqually
         favoriteCellStackView.spacing = 10
         setupMainStackViewConstraint()
         addPokemonImageAndNameToStackView()
@@ -29,33 +29,39 @@ class FavoriteCell: UITableViewCell, DetailsPokemonViewControllerDelegate {
 
     private func setupMainStackViewConstraint() {
         favoriteCellStackView.translatesAutoresizingMaskIntoConstraints = false
-        favoriteCellStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 2).isActive = true
-        favoriteCellStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -2).isActive = true
-        favoriteCellStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 2).isActive = true
-        favoriteCellStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -2).isActive = true
+        favoriteCellStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10).isActive = true
+        favoriteCellStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10).isActive = true
+        favoriteCellStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10).isActive = true
+        favoriteCellStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10).isActive = true
     }
     
     private func addPokemonImageAndNameToStackView() {
         favoriteCellStackView.addArrangedSubview(favoritePokemonImage)
         favoriteCellStackView.addArrangedSubview(favoritePokemonName)
+        favoriteCellStackView.addArrangedSubview(favoritePokemonImageIcon)
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
         contentView.layer.cornerRadius = 15
         contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
-        favoritePokemonImageConstraint()
-        favoritePokemonNameLableConstraint()
     }
     
     
     private let favoritePokemonImage : UIImageView = {
-        let image = UIImageView(frame: CGRectMake(0, 0, 100, 100))
+        let image = UIImageView(frame: CGRectMake(0, 0, 150, 150))
         image.contentMode = .scaleAspectFit
         image.clipsToBounds = true
         image.layer.cornerRadius = 15
-//        image.layer.borderWidth = 3.0
-//        image.layer.borderColor = UIColor.black.cgColor
+        return image
+    }()
+    
+    private let favoritePokemonImageIcon : UIImageView = {
+        let image = UIImageView(frame: CGRectMake(0, 0, 50, 50))
+        image.contentMode = .scaleAspectFit
+        image.clipsToBounds = false
+        image.tintColor = .systemRed
+        image.image = UIImage(systemName: "heart.fill")
         return image
     }()
     
@@ -73,12 +79,14 @@ class FavoriteCell: UITableViewCell, DetailsPokemonViewControllerDelegate {
     
     private func favoritePokemonImageConstraint() {
         favoritePokemonImage.translatesAutoresizingMaskIntoConstraints = false
+//        favoritePokemonImage.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
+
 //        favoritePokemonImage.topAnchor.constraint(equalTo: favoriteCellStackView.topAnchor, constant: 5).isActive = true
 //        favoritePokemonImage.bottomAnchor.constraint(equalTo: favoriteCellStackView.bottomAnchor, constant: -5).isActive = true
-//        favoritePokemonImage.leadingAnchor.constraint(equalTo: favoriteCellStackView.leadingAnchor, constant: 5).isActive = true
-        favoritePokemonImage.widthAnchor.constraint(greaterThanOrEqualToConstant: 120).isActive = true
-        favoritePokemonImage.heightAnchor.constraint(equalTo: favoritePokemonImage.widthAnchor).isActive = true
-       
+//        favoritePokemonImage.leadingAnchor.constraint(equalTo: favoriteCellStackView.leadingAnchor, constant: 10).isActive = true
+//        favoritePokemonImage.widthAnchor.constraint(greaterThanOrEqualToConstant: 120).isActive = true
+//        favoritePokemonImage.heightAnchor.constraint(equalTo: favoritePokemonImage.widthAnchor).isActive = true
+//
     }
     
     private func favoritePokemonNameLableConstraint() {
