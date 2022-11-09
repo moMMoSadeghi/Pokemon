@@ -14,15 +14,13 @@ class FavoriteCell: UITableViewCell, DetailsPokemonViewControllerDelegate {
 //    var detailsPokemonViewController = DetailsPokemonViewController()
 
     
-    private let cellColors = [UIColor(red: 0.2, green: 0.3, blue: 0.2, alpha: 0.4), UIColor(red: 0.6, green: 0.2, blue: 0.5, alpha: 0.4), UIColor(red: 0.3, green: 0.2, blue: 0.7, alpha: 0.4), UIColor(red: 0.5, green: 0.1, blue: 0.5, alpha: 0.4), UIColor(red: 0.4, green: 0.2, blue: 0.3, alpha: 0.4)]
-    
     private let favoriteCellStackView = UIStackView()
     
     private func configureMainStackView() {
         contentView.addSubview(favoriteCellStackView)
-        favoriteCellStackView.axis = .horizontal
-        favoriteCellStackView.distribution = .fillEqually
-        favoriteCellStackView.spacing = 10
+        favoriteCellStackView.axis         = .horizontal
+        favoriteCellStackView.distribution = .fill
+        favoriteCellStackView.spacing      = 30
         setupMainStackViewConstraint()
         addPokemonImageAndNameToStackView()
     }
@@ -48,31 +46,32 @@ class FavoriteCell: UITableViewCell, DetailsPokemonViewControllerDelegate {
     }
     
     
-    private let favoritePokemonImage : UIImageView = {
-        let image = UIImageView(frame: CGRectMake(0, 0, 150, 150))
-        image.contentMode = .scaleAspectFit
-        image.clipsToBounds = true
+    private lazy var favoritePokemonImage : UIImageView = {
+        let image                         = UIImageView(frame: CGRectMake(0, 0, 150, 150))
+        image.contentMode                 = .scaleAspectFit
+        image.clipsToBounds               = false
+        image.tintColor                   = .white
         image.layer.cornerRadius = 15
         return image
     }()
     
-    private let favoritePokemonImageIcon : UIImageView = {
-        let image = UIImageView(frame: CGRectMake(0, 0, 50, 50))
-        image.contentMode = .scaleAspectFit
-        image.clipsToBounds = false
-        image.tintColor = .systemRed
-        image.image = UIImage(systemName: "heart.fill")
+    private lazy var favoritePokemonImageIcon : UIImageView = {
+        let image                             = UIImageView(frame: CGRectMake(0, 0, 25, 25))
+        image.contentMode                     = .scaleAspectFit
+        image.clipsToBounds                   = false
+        image.tintColor                       = .white
+        image.image                           = UIImage(systemName: "heart.fill")
         return image
     }()
     
    
     
 //    Pokemon Number lable in the Cell
-    private let favoritePokemonName : UILabel = {
-        let lable = UILabel()
-        lable.textColor = .white
-        lable.textAlignment = .center
-        lable.font = .systemFont(ofSize: 25)
+    private lazy var favoritePokemonName : UILabel = {
+        let lable                        = UILabel()
+        lable.textColor                  = .white
+        lable.textAlignment              = .center
+        lable.font                       = UIFont(name:"Chalkboard SE", size: 28)
         return lable
     }()
     
@@ -102,14 +101,14 @@ class FavoriteCell: UITableViewCell, DetailsPokemonViewControllerDelegate {
     
     func didSendFavoritePokemon(favoritePokemon: FavoritePokemonModel) {
         favoritePokemonImage.image = UIImage(named: favoritePokemon.image) 
-        favoritePokemonName.text = favoritePokemon.name
+        favoritePokemonName.text   = favoritePokemon.name
     }
     
 
     
 //    Delegate Method comes from the Protocol to receive the pokemon coming from the DetailsPokemonViewController
     func fillFavoritePokemonData(pokImg : String, pokName : String) {
-        favoritePokemonImage.image = UIImage(named: "2")
+        favoritePokemonImage.image = UIImage(systemName: "heart")
         favoritePokemonName.text = pokName
         
     }
@@ -128,7 +127,7 @@ class FavoriteCell: UITableViewCell, DetailsPokemonViewControllerDelegate {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configureMainStackView()
 //        detailsPokemonViewController.delegate = self
-        contentView.backgroundColor = cellColors.randomElement()
+        contentView.backgroundColor = Colors.cellColors.randomElement() as! UIColor
        
        
     }

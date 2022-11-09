@@ -11,4 +11,9 @@ import Foundation
 
 class DetailsPokemonViewModel {
     
+    
+    
 }
+
+
+

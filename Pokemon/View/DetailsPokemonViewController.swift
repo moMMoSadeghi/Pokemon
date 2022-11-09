@@ -30,10 +30,13 @@ class DetailsPokemonViewController: UIViewController {
     //MARK: - Variables
     
     
-    var pokemon                          : PokemonDataModel
-    var id                               : Int
-    var pok                              = [Stats]()
-    
+    var pokemon                 : PokemonDataModel!
+    var id                      : Int!
+    var preparedID    : Int           {
+        ((id ?? 0) + 1)
+    }
+    var pok                     = [Stats]()
+    var detailsPokemonViewModel = DetailsPokemonViewModel()
     //    var pokemonSelected                  : PokemonDataModel
     //    var delegate                         : DetailsPokemonViewControllerDelegate?
     
@@ -52,7 +55,7 @@ class DetailsPokemonViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemGreen
+        view.backgroundColor =  UIColor(named: "detailsViewControllerBackground")
         
         configureTabBarStackView()
         configurePokemonDetailsScrollView()
@@ -61,20 +64,20 @@ class DetailsPokemonViewController: UIViewController {
         print(id)
         fetchPokemonsDetails()
         setProfileImageAndName()
-        //        setProgresses()
+        view.layer.cornerRadius = 15
+        selectedPokemonImageConstraint()
+        selectedPokemonNameLableConstraint()
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        view.layer.cornerRadius = 15
-        
     }
     
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        selectedPokemonImageConstraint()
-        selectedPokemonNameLableConstraint()
+        
         
     }
     
@@ -94,6 +97,16 @@ class DetailsPokemonViewController: UIViewController {
     }()
     
     
+    private lazy var selectedPokemonNumberLable : UILabel = {
+        let lable = UILabel()
+        lable.textColor = UIColor(named: "detailsNumLable")
+        lable.text = String("# \((id ?? 0) + 1)")
+        lable.textAlignment = .center
+        lable.font = UIFont(name:"Chalkboard SE", size: 28)
+        return lable
+    }()
+    
+    
     //        Creating Add Bar Button
     private lazy var addButton : UIButton = {
         let button = UIButton()
@@ -110,7 +123,7 @@ class DetailsPokemonViewController: UIViewController {
         detailsScrollView.addSubview(pokemonUITabBarStackView)
         pokemonUITabBarStackView.axis = .horizontal
         pokemonUITabBarStackView.distribution = .fillEqually
-        pokemonUITabBarStackView.spacing = 100
+        pokemonUITabBarStackView.spacing = 30
         setupPokemonUITabBarStackViewConstraint()
         addElementsPokemonUITabBarStackView()
     }
@@ -124,6 +137,7 @@ class DetailsPokemonViewController: UIViewController {
     
     private func addElementsPokemonUITabBarStackView() {
         pokemonUITabBarStackView.addArrangedSubview(cancelButton)
+        pokemonUITabBarStackView.addArrangedSubview(selectedPokemonNumberLable)
         pokemonUITabBarStackView.addArrangedSubview(addButton)
         
     }
@@ -166,9 +180,9 @@ class DetailsPokemonViewController: UIViewController {
     private lazy var selectedPokemonNameLable : UILabel = {
         let lable = UILabel()
         lable.textColor = .white
-        lable.text = pokemon.name.uppercased()
+        lable.text = pokemon?.name.uppercased()
         lable.textAlignment = .center
-        lable.font = .systemFont(ofSize: 25)
+        lable.font = UIFont(name:"Chalkboard SE", size: 28)
         return lable
     }()
     
@@ -256,7 +270,7 @@ class DetailsPokemonViewController: UIViewController {
         lable.textColor      = .darkGray
         lable.text           = "hp"
         //        lable.text           = "hp = \(pok[0].base_stat)"
-        lable.font           = .systemFont(ofSize: 25)
+        lable.font           = UIFont(name:"Chalkboard SE", size: 28)
         lable.textAlignment  = .center
         lable.translatesAutoresizingMaskIntoConstraints = false
         return lable
@@ -271,7 +285,7 @@ class DetailsPokemonViewController: UIViewController {
         progressBar.progressViewStyle   = .bar
         progressBar.transform           = progressBar.transform.scaledBy(x: 1, y: 4)
         progressBar.trackTintColor      = .gray
-        progressBar.tintColor           = .systemRed
+        progressBar.tintColor           = UIColor(named: "progressBarTintColor")
         progressBar.translatesAutoresizingMaskIntoConstraints = false
         return progressBar
     }()
@@ -281,7 +295,7 @@ class DetailsPokemonViewController: UIViewController {
         let lable                = UILabel(frame: CGRect(x: 0, y: 0, width: 150, height: 50))
         lable.textColor          = .darkGray
         lable.text               = "attack"
-        lable.font               = .systemFont(ofSize: 25)
+        lable.font               = UIFont(name:"Chalkboard SE", size: 28)
         lable.textAlignment      = .center
         lable.translatesAutoresizingMaskIntoConstraints = false
         return lable
@@ -294,7 +308,7 @@ class DetailsPokemonViewController: UIViewController {
         progressBar.progressViewStyle  = .bar
         progressBar.transform          = CGAffineTransformMakeScale(1, 4)
         progressBar.trackTintColor     = .gray
-        progressBar.tintColor          = .green
+        progressBar.tintColor          = UIColor(named: "progressBarTintColor")
         progressBar.translatesAutoresizingMaskIntoConstraints = false
         return progressBar
     }()
@@ -304,7 +318,7 @@ class DetailsPokemonViewController: UIViewController {
         let lable                        = UILabel(frame: CGRect(x: 0, y: 0, width: 150, height: 50))
         lable.textColor                  = .darkGray
         lable.text                       = "defense"
-        lable.font                       = .systemFont(ofSize: 25)
+        lable.font                       = UIFont(name:"Chalkboard SE", size: 28)
         lable.adjustsFontSizeToFitWidth  = true
         lable.textAlignment              = .center
         lable.translatesAutoresizingMaskIntoConstraints = false
@@ -318,7 +332,7 @@ class DetailsPokemonViewController: UIViewController {
         progressBar.progressViewStyle   = .bar
         progressBar.transform           = CGAffineTransformMakeScale(1, 4)
         progressBar.trackTintColor      = .gray
-        progressBar.tintColor           = .green
+        progressBar.tintColor           = UIColor(named: "progressBarTintColor")
         return progressBar
     }()
     
@@ -327,7 +341,7 @@ class DetailsPokemonViewController: UIViewController {
         let lable                       = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 21))
         lable.textColor                 = .darkGray
         lable.text                      = "special attack"
-        lable.font                      = .systemFont(ofSize: 25)
+        lable.font                      = UIFont(name:"Chalkboard SE", size: 28)
         lable.textAlignment             = .center
         lable.translatesAutoresizingMaskIntoConstraints = false
         return lable
@@ -340,7 +354,7 @@ class DetailsPokemonViewController: UIViewController {
         progressBar.progressViewStyle         = .bar
         progressBar.transform                 = CGAffineTransformMakeScale(1, 4)
         progressBar.trackTintColor            = .gray
-        progressBar.tintColor                 = .green
+        progressBar.tintColor                 = UIColor(named: "progressBarTintColor")
         progressBar.translatesAutoresizingMaskIntoConstraints = false
         return progressBar
     }()
@@ -351,7 +365,7 @@ class DetailsPokemonViewController: UIViewController {
         let lable                        = UILabel(frame: CGRect(x: 0, y: 0, width: 150, height: 50))
         lable.textColor                  = .darkGray
         lable.text                       = "special defense"
-        lable.font                       = .systemFont(ofSize: 25)
+        lable.font                       = UIFont(name:"Chalkboard SE", size: 28)
         lable.textAlignment              = .center
         lable.translatesAutoresizingMaskIntoConstraints = false
         return lable
@@ -364,7 +378,7 @@ class DetailsPokemonViewController: UIViewController {
         progressBar.progressViewStyle          = .bar
         progressBar.transform                  = CGAffineTransformMakeScale(1, 4)
         progressBar.trackTintColor             = .gray
-        progressBar.tintColor                  = .green
+        progressBar.tintColor                  = UIColor(named: "progressBarTintColor")
         return progressBar
     }()
     
@@ -373,7 +387,7 @@ class DetailsPokemonViewController: UIViewController {
         let lable               = UILabel(frame: CGRect(x: 0, y: 0, width: 150, height: 50))
         lable.textColor         = .darkGray
         lable.text              = "speed"
-        lable.font              = .systemFont(ofSize: 25)
+        lable.font              = UIFont(name:"Chalkboard SE", size: 28)
         lable.textAlignment     = .center
         lable.translatesAutoresizingMaskIntoConstraints = false
         return lable
@@ -385,7 +399,7 @@ class DetailsPokemonViewController: UIViewController {
         progressBar.progressViewStyle = .bar
         progressBar.transform         = CGAffineTransformMakeScale(1, 4)
         progressBar.trackTintColor    = .gray
-        progressBar.tintColor         = .systemRed
+        progressBar.tintColor         = UIColor(named: "progressBarTintColor")
         progressBar.translatesAutoresizingMaskIntoConstraints = false
         return progressBar
     }()
@@ -420,16 +434,20 @@ class DetailsPokemonViewController: UIViewController {
     
     //MARK: - Methods
     
+    
     private func setProfileImageAndName() {
-        selectedPokemonImage.kf.setImage(with: URL(string: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/\(id + 1).png"),
+        selectedPokemonImage.kf.setImage(with: URL(string: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/\(preparedID).png"),
                                          placeholder: nil, options: nil, progressBlock: nil, completionHandler: nil
         )
-        selectedPokemonNameLable.text = pokemon.name.uppercased()
-        
+        selectedPokemonNameLable.text = pokemon?.name.uppercased()
+
     }
     
-    @objc func addToFavoritePokemons() {
-        
+     func addToFavoritePokemons() {
+        guard let favoridPokemon = pokemon else { return }
+        guard let favoridPokemonID = id else { return }
+//        let favoritPokemonViewController = FavoritePokemonsViewController(pokemon: favoridPokemon, id: favoridPokemonID)
+//        self.present(favoritPokemonViewController, animated: true)
     }
     
     
@@ -438,19 +456,25 @@ class DetailsPokemonViewController: UIViewController {
     @objc func addToFavorite() {
         let addButtonAlert = UIAlertController(title: "Add Pokemons?", message: "Would you like to add this pokemon to your favorite ones?", preferredStyle: UIAlertController.Style.alert)
         
-        addButtonAlert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
-        addButtonAlert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: nil))
+        addButtonAlert.addAction(UIAlertAction(title: "Yes", style: UIAlertAction.Style.default, handler: {
+            [weak self] (handler) in
+            guard let self = self else { return }
+            self.addToFavoritePokemons()
+        }))
+        addButtonAlert.addAction(UIAlertAction(title: "No", style: UIAlertAction.Style.cancel, handler: nil))
         
         self.present(addButtonAlert, animated: true, completion: nil)
     }
     
     func fetchPokemonsDetails()  {
-        URLSession.shared.request(url: URL(string: "https://pokeapi.co/api/v2/pokemon/\(id)/"), expecting: PokemonDetailsDataModel.self){
+        URLSession.shared.request(url: URL(string: "https://pokeapi.co/api/v2/pokemon/\(preparedID)/"), expecting: PokemonDetailsDataModel.self){
             [weak self] result in
             switch result {
             case .success(let receivedPokemonsData):
                 DispatchQueue.main.async {
-                    self?.pok = receivedPokemonsData.stats
+                    guard let self = self else { return }
+                    self.pok = receivedPokemonsData.stats
+                    self.setProgresses()
                     print(receivedPokemonsData)
                 }
             case .failure(let error):
@@ -475,12 +499,12 @@ class DetailsPokemonViewController: UIViewController {
     
     
     private func setProgresses() {
-        let hp              : Int = pok[0].base_stat
-        let attack          : Int = pok[1].base_stat
-        let defense         : Int = pok[2].base_stat
-        let specialAttack   : Int = pok[3].base_stat
-        let specialDefense  : Int = pok[4].base_stat
-        let speed           : Int = pok[5].base_stat
+        let hp              : Int = pok[0].base_stat ?? 0
+        let attack          : Int = pok[1].base_stat ?? 0
+        let defense         : Int = pok[2].base_stat ?? 0
+        let specialAttack   : Int = pok[3].base_stat ?? 0
+        let specialDefense  : Int = pok[4].base_stat ?? 0
+        let speed           : Int = pok[5].base_stat ?? 0
         
         hpProgressBar.setProgress(formatProgressesValues(value: hp), animated: true)
         attackProgressBar.setProgress(formatProgressesValues(value: attack), animated: true)

@@ -15,8 +15,8 @@ import Kingfisher
 class PokemonsViewController: UIViewController, UISearchBarDelegate {
     
     let searchController    = UISearchController(searchResultsController: nil)
-    var pokemonsData        = [PokemonDataModel]()
-    //    var viewModel           : PokemonsViewModel!
+    var pokemons            = [PokemonDataModel]()
+    var pokemonsViewModel   = PokemonsViewModel()
     var delegate            : DetailsPokemonViewControllerDelegate?
     //    var pokemonsViewModel   = PokemonsViewModel(pokemonsData: <#PokemonDataModel#>)
     
@@ -49,8 +49,10 @@ class PokemonsViewController: UIViewController, UISearchBarDelegate {
         super.viewDidLoad()
         self.title = "Pokemons"
         navigationItem.titleView                     = pokemonSearchBar
+        view.backgroundColor = UIColor(named: "pokemonsViewControllerBackground")
         pokemonSearchBar.delegate                    = self
         navigationItem.hidesSearchBarWhenScrolling   = false
+//        pokemons                                     = pokemonsViewModel.pokemonsData
         configureCollectionView()
         setupPokemonsTableViewConstraint()
         fetchPokemonsData()
@@ -67,6 +69,7 @@ class PokemonsViewController: UIViewController, UISearchBarDelegate {
     func configureCollectionView() {
         pokemonsTableView.delegate   = self
         pokemonsTableView.dataSource = self
+        pokemonsTableView.backgroundColor = UIColor(named: "background")
     }
     
     
@@ -106,7 +109,7 @@ class PokemonsViewController: UIViewController, UISearchBarDelegate {
             switch result {
             case .success(let receivedPokemonsData):
                 DispatchQueue.main.async {
-                    self?.pokemonsData = receivedPokemonsData.results
+                    self?.pokemons = receivedPokemonsData.results
                     self?.pokemonsTableView.reloadData()
                 }
             case .failure(let error):
@@ -123,7 +126,7 @@ class PokemonsViewController: UIViewController, UISearchBarDelegate {
     func searchBarClicked(_ searchBar : UISearchBar) {
         searchBar.resignFirstResponder()
         if let pokemonText = searchBar.text {
-            pokemonsData = []
+            pokemons = []
             pokemonsTableView.reloadData()
             //            pokemonsViewModel.fetchPokemonsData()
             
@@ -175,13 +178,13 @@ extension PokemonsViewController : UITableViewDelegate, UITableViewDataSource {
     
     //MARK: numberOfRowsInSection
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return pokemonsData.count
+        return pokemons.count
     }
     
     //MARK: cellForItemAt
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.pokemonCellIdentifier, for: indexPath) as? PokemonCell else { return UITableViewCell() }
-        cell.fillPokemonsData(pokName: pokemonsData[indexPath.row].name, pokID: "\(indexPath.row + 1)")
+        cell.fillPokemonsData(pokName: pokemons[indexPath.row].name, pokID: "\(indexPath.row + 1)")
         return cell
     }
     
@@ -195,7 +198,7 @@ extension PokemonsViewController : UITableViewDelegate, UITableViewDataSource {
     //MARK:  didSelectItemAt
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let detailsViewController = DetailsPokemonViewController(pokemon: PokemonDataModel(name: pokemonsData[indexPath.row].name, url: pokemonsData[indexPath.row].url), id: indexPath.row)
+        let detailsViewController = DetailsPokemonViewController(pokemon: PokemonDataModel(name: pokemons[indexPath.row].name, url: pokemons[indexPath.row].url), id: indexPath.row)
         self.present(detailsViewController, animated: true)
     }
 }

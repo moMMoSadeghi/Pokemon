@@ -34,7 +34,7 @@ class PokemonCell: UITableViewCell {
         let lable                   = UILabel()
         lable.textColor             = .white
         lable.textAlignment         = .center
-        lable.font                  = .systemFont(ofSize: 25)
+        lable.font                  = UIFont(name:"Chalkboard SE", size: 28)
         return lable
     }()
     
@@ -47,13 +47,12 @@ class PokemonCell: UITableViewCell {
         contentView.layer.cornerRadius = 20
         contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
         pokImageConstraint()
-        //        pokNumLableConstraint()
         pokNameLableConstraint()
         
     }
     
     func fillPokemonsData(pokName : String, pokID: String) {
-        pokNameLable.text = pokName
+        pokNameLable.text = "#\(pokID). \(pokName)"
         pokImage.kf.setImage(with: URL(string: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/\(pokID).png"), placeholder: nil, options: nil, progressBlock: nil, completionHandler: nil
 //                             { result in
 //            switch result {
@@ -95,7 +94,8 @@ class PokemonCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.addSubview(pokImage)
         contentView.addSubview(pokNameLable)
-        contentView.backgroundColor = Colors.cellColors.randomElement()
+        contentView.backgroundColor = Colors.cellColors.randomElement() as? UIColor
+        
     }
     
     required init?(coder: NSCoder) {
