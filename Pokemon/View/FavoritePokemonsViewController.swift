@@ -11,32 +11,26 @@ import UIKit
 class FavoritePokemonsViewController: UIViewController, UITabBarDelegate, UITableViewDataSource, UITableViewDelegate  {
     
     
-    
-    
-    
-    //    var detailsPokemonViewController = DetailsPokemonViewController()
-    var favoritePokemons = [FavoritePokemonModel]()
     var fakePokemons     = ["A"]
-//    var pokemon          : PokemonDataModel?
-//    var id               : Int?
+    let userDefaulfManager = UserDefaulsManager()
+    var favoritePokemons : [FavoritePokemonModel] = []
     
-    
-//    init(pokemon : PokemonDataModel, id : Int) {
-//        self.pokemon = pokemon
-//        self.id      = id
-//        super.init(nibName: nil, bundle: nil)
-//    }
-//    required init?(coder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Favorite Pokemons"
         setupFavoritePokemonsTableView()
-        
-        
+        recivingSavedPokemonsFromUserDefaults()
+    }
+    
+    func recivingSavedPokemonsFromUserDefaults() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            
+            self.favoritePokemons = self.userDefaulfManager.retreivedPokemons()
+            self.favoritePokemonTableView.reloadData()
+        }
     }
     
     //    Creating Favorite Pokemon TableView
@@ -65,18 +59,15 @@ class FavoritePokemonsViewController: UIViewController, UITabBarDelegate, UITabl
     
     
     
-    //    func didSendFavoritePokemon(favoritePokemon: FavoritePokemonModel) {
-    //        favoritePokemonImage.image = UIImage(named: favoritePokemon.image)
-    //        pokNameLable.text = favoritePokemon.name
-    //    }
-    
-    
-    
     
     
 }
 
+
+
 extension FavoritePokemonsViewController {
+    
+    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return fakePokemons.count
@@ -84,11 +75,14 @@ extension FavoritePokemonsViewController {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.favoritePokemonCellIdentifier, for: indexPath) as? FavoriteCell else { return UITableViewCell() }
-        cell.fillFavoritePokemonData(pokImg: "", pokName: "4444")
-        //        cell.fillPokemonData(pokName: "The NAME", pokImg: "2")
+//        guard let favPokName = favoritePokemons[indexPath.row].name else { return }
+//        guard let favPokID = "\(indexPath.row)" else { return }
+        cell.fillFavoritePokemonData(pokID: favoritePokemons[indexPath.row].name , pokName: "\(indexPath.row)")
         cell.isUserInteractionEnabled = false
         return cell
     }
+    
+    
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 105

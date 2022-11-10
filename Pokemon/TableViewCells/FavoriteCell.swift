@@ -6,8 +6,9 @@
 //
 
 import UIKit
+import Kingfisher
 
-class FavoriteCell: UITableViewCell, DetailsPokemonViewControllerDelegate {
+class FavoriteCell: UITableViewCell {
    
     
     
@@ -99,19 +100,20 @@ class FavoriteCell: UITableViewCell, DetailsPokemonViewControllerDelegate {
 //        favoritePokemonName.heightAnchor.constraint(equalTo: favoritePokemonImage.widthAnchor).isActive = true
     }
     
-    func didSendFavoritePokemon(favoritePokemon: FavoritePokemonModel) {
-        favoritePokemonImage.image = UIImage(named: favoritePokemon.image) 
-        favoritePokemonName.text   = favoritePokemon.name
-    }
+//    func didSendFavoritePokemon(favoritePokemon: FavoritePokemonModel) {
+//        favoritePokemonImage.image = UIImage(named: favoritePokemon.image)
+//        favoritePokemonName.text   = favoritePokemon.name
+//    }
     
 
     
 //    Delegate Method comes from the Protocol to receive the pokemon coming from the DetailsPokemonViewController
-    func fillFavoritePokemonData(pokImg : String, pokName : String) {
-        favoritePokemonImage.image = UIImage(systemName: "heart")
+    func fillFavoritePokemonData(pokID : String, pokName : String) {
         favoritePokemonName.text = pokName
+        favoritePokemonImage.kf.setImage(with: URL(string: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/\(pokID).png"), placeholder: nil, options: nil, progressBlock: nil, completionHandler: nil)
         
     }
+    
     
     
     override func awakeFromNib() {
@@ -127,7 +129,7 @@ class FavoriteCell: UITableViewCell, DetailsPokemonViewControllerDelegate {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configureMainStackView()
 //        detailsPokemonViewController.delegate = self
-        contentView.backgroundColor = Colors.cellColors.randomElement() as! UIColor
+        contentView.backgroundColor = Colors.cellColors.randomElement() as? UIColor
        
        
     }

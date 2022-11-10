@@ -37,7 +37,10 @@ class DetailsPokemonViewController: UIViewController {
     }
     var pok                     = [Stats]()
     var detailsPokemonViewModel = DetailsPokemonViewModel()
-    //    var pokemonSelected                  : PokemonDataModel
+    var allFavoritePokemons     : [FavoritePokemonModel]?
+    let userDefaultsManager      = UserDefaulsManager()
+                            
+                            //    var pokemonSelected                  : PokemonDataModel
     //    var delegate                         : DetailsPokemonViewControllerDelegate?
     
     
@@ -444,8 +447,18 @@ class DetailsPokemonViewController: UIViewController {
     }
     
      func addToFavoritePokemons() {
-        guard let favoridPokemon = pokemon else { return }
-        guard let favoridPokemonID = id else { return }
+         let favoritePokemon = FavoritePokemonModel(id: preparedID, name: pokemon.name)
+         userDefaultsManager.savedPokemons(pokemon: favoritePokemon)
+
+//         allFavoritePokemons?.append(favoritePokemon)
+//         UserDefaulsManager.savedPokemon([allFavoritePokemons])
+         
+//         UserDefaulsManager.shared.savedPokemon(pokemonID: preparedID, pokemonName: pokemon.name)
+//         let userDefaults = UserDefaults()
+//         userDefaults.set(pokemon.name, forKey: "pokemonName")
+//         userDefaults.set(preparedID, forKey: "pokemonID")
+//        guard let favoridPokemon = pokemon else { return }
+//        guard let favoridPokemonID = id else { return }
 //        let favoritPokemonViewController = FavoritePokemonsViewController(pokemon: favoridPokemon, id: favoridPokemonID)
 //        self.present(favoritPokemonViewController, animated: true)
     }
@@ -499,12 +512,12 @@ class DetailsPokemonViewController: UIViewController {
     
     
     private func setProgresses() {
-        let hp              : Int = pok[0].base_stat ?? 0
-        let attack          : Int = pok[1].base_stat ?? 0
-        let defense         : Int = pok[2].base_stat ?? 0
-        let specialAttack   : Int = pok[3].base_stat ?? 0
-        let specialDefense  : Int = pok[4].base_stat ?? 0
-        let speed           : Int = pok[5].base_stat ?? 0
+        let hp              : Int = pok[0].base_stat
+        let attack          : Int = pok[1].base_stat 
+        let defense         : Int = pok[2].base_stat 
+        let specialAttack   : Int = pok[3].base_stat 
+        let specialDefense  : Int = pok[4].base_stat 
+        let speed           : Int = pok[5].base_stat 
         
         hpProgressBar.setProgress(formatProgressesValues(value: hp), animated: true)
         attackProgressBar.setProgress(formatProgressesValues(value: attack), animated: true)

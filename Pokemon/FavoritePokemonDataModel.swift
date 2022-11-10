@@ -9,7 +9,7 @@ import Foundation
 
 
 
-struct FavoritePokemonModel {
-        var image : String
+struct FavoritePokemonModel : Codable {
+        var id : Int
         var name : String
     }
