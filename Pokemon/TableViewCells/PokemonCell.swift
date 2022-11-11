@@ -43,12 +43,10 @@ class PokemonCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        
         contentView.layer.cornerRadius = 20
         contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
         pokImageConstraint()
         pokNameLableConstraint()
-        
     }
     
     func fillPokemonsData(pokName : String, pokID: String) {
@@ -70,11 +68,11 @@ class PokemonCell: UITableViewCell {
     //    Set Pokemon Image Constraint
     private func pokImageConstraint() {
         
-        pokImage.translatesAutoresizingMaskIntoConstraints = false
-        pokImage.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
-        pokImage.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 30).isActive = true
+        pokImage.translatesAutoresizingMaskIntoConstraints                                                        = false
+        pokImage.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive                            = true
+        pokImage.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 30).isActive                      = true
         pokImage.widthAnchor.constraint(greaterThanOrEqualTo: contentView.heightAnchor, multiplier: 0.6).isActive = true
-        pokImage.heightAnchor.constraint(equalTo: pokImage.widthAnchor).isActive = true
+        pokImage.heightAnchor.constraint(equalTo: pokImage.widthAnchor).isActive                                  = true
     }
     
     
@@ -82,11 +80,11 @@ class PokemonCell: UITableViewCell {
     //    Set Pokemon Name Lable Constraint
     private func pokNameLableConstraint() {
         
-        pokNameLable.translatesAutoresizingMaskIntoConstraints = false
-        pokNameLable.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
-        pokNameLable.topAnchor.constraint(equalTo: pokImage.bottomAnchor, constant: 10).isActive = true
+        pokNameLable.translatesAutoresizingMaskIntoConstraints                                                       = false
+        pokNameLable.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive                           = true
+        pokNameLable.topAnchor.constraint(equalTo: pokImage.bottomAnchor, constant: 10).isActive                     = true
         pokNameLable.widthAnchor.constraint(greaterThanOrEqualTo: contentView.widthAnchor, multiplier: 0.3).isActive = true
-        pokNameLable.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10).isActive = true
+        pokNameLable.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10).isActive              = true
         
     }
     

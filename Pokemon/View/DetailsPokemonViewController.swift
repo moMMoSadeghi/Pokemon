@@ -9,10 +9,6 @@ import UIKit
 import Kingfisher
 
 
-protocol DetailsPokemonViewControllerDelegate {
-    func didSendFavoritePokemon(favoritePokemon : FavoritePokemonModel)
-}
-
 
 
 class DetailsPokemonViewController: UIViewController {
@@ -32,10 +28,11 @@ class DetailsPokemonViewController: UIViewController {
     
     var pokemon                 : PokemonDataModel!
     var id                      : Int!
-    var preparedID    : Int           {
-        ((id ?? 0) + 1)
-    }
+    var preparedID              : Int           {
+                                                  ((id ?? 0) + 1)
+                                              }
     var pok                     = [Stats]()
+    var pokAbilities            : Species?
     var detailsPokemonViewModel = DetailsPokemonViewModel()
     var allFavoritePokemons     : [FavoritePokemonModel]?
     let userDefaultsManager      = UserDefaulsManager()
@@ -53,6 +50,8 @@ class DetailsPokemonViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    deinit {}
     
     //MARK: - LifeCycle
     
@@ -80,8 +79,6 @@ class DetailsPokemonViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
-        
     }
     
     
@@ -92,7 +89,7 @@ class DetailsPokemonViewController: UIViewController {
     
     //        Creating Cancel Bar Button
     private lazy var cancelButton : UIButton = {
-        let button = UIButton()
+        let button                = UIButton()
         button.setTitle("Cancel", for: .normal)
         button.setTitleColor(UIColor.blue, for: .normal)
         button.addTarget(self, action: #selector(cancelModalpage), for: .touchUpInside)
@@ -101,11 +98,11 @@ class DetailsPokemonViewController: UIViewController {
     
     
     private lazy var selectedPokemonNumberLable : UILabel = {
-        let lable = UILabel()
-        lable.textColor = UIColor(named: "detailsNumLable")
-        lable.text = String("# \((id ?? 0) + 1)")
+        let lable           = UILabel()
+        lable.textColor     = UIColor(named: "detailsNumLable")
+        lable.text          = String("# \((id ?? 0) + 1)")
         lable.textAlignment = .center
-        lable.font = UIFont(name:"Chalkboard SE", size: 28)
+        lable.font          = UIFont(name:"Chalkboard SE", size: 28)
         return lable
     }()
     
@@ -124,9 +121,9 @@ class DetailsPokemonViewController: UIViewController {
     
     private func configureTabBarStackView() {
         detailsScrollView.addSubview(pokemonUITabBarStackView)
-        pokemonUITabBarStackView.axis = .horizontal
+        pokemonUITabBarStackView.axis         = .horizontal
         pokemonUITabBarStackView.distribution = .fillEqually
-        pokemonUITabBarStackView.spacing = 30
+        pokemonUITabBarStackView.spacing      = 30
         setupPokemonUITabBarStackViewConstraint()
         addElementsPokemonUITabBarStackView()
     }
@@ -134,8 +131,8 @@ class DetailsPokemonViewController: UIViewController {
     private func setupPokemonUITabBarStackViewConstraint() {
         pokemonUITabBarStackView.translatesAutoresizingMaskIntoConstraints = false
         pokemonUITabBarStackView.topAnchor.constraint(equalTo: detailsScrollView.topAnchor, constant: 25).isActive = true
-        pokemonUITabBarStackView.leadingAnchor.constraint(equalTo: detailsScrollView.leadingAnchor).isActive = true
-        pokemonUITabBarStackView.trailingAnchor.constraint(equalTo: detailsScrollView.trailingAnchor).isActive = true
+        pokemonUITabBarStackView.leadingAnchor.constraint(equalTo: detailsScrollView.leadingAnchor).isActive       = true
+        pokemonUITabBarStackView.trailingAnchor.constraint(equalTo: detailsScrollView.trailingAnchor).isActive     = true
     }
     
     private func addElementsPokemonUITabBarStackView() {
@@ -160,9 +157,9 @@ class DetailsPokemonViewController: UIViewController {
     //    Configuring Selected Pokemon Profile UIView Constraint
     private func setupPokemonProfileUIViewConstraint() {
         pokemonProfileView.translatesAutoresizingMaskIntoConstraints = false
-        pokemonProfileView.centerXAnchor.constraint(equalTo: detailsScrollView.centerXAnchor).isActive = true
+        pokemonProfileView.centerXAnchor.constraint(equalTo: detailsScrollView.centerXAnchor).isActive                 = true
         pokemonProfileView.topAnchor.constraint(equalTo: pokemonUITabBarStackView.bottomAnchor, constant: 30).isActive = true
-        pokemonProfileView.leadingAnchor.constraint(equalTo: detailsScrollView.leadingAnchor, constant: 5).isActive = true
+        pokemonProfileView.leadingAnchor.constraint(equalTo: detailsScrollView.leadingAnchor, constant: 5).isActive    = true
         pokemonProfileView.trailingAnchor.constraint(equalTo: detailsScrollView.trailingAnchor, constant: -5).isActive = true
     }
     
@@ -181,11 +178,10 @@ class DetailsPokemonViewController: UIViewController {
     
     
     private lazy var selectedPokemonNameLable : UILabel = {
-        let lable = UILabel()
-        lable.textColor = .white
-        lable.text = pokemon?.name.uppercased()
+        let lable           = UILabel()
+        lable.textColor     = .white
         lable.textAlignment = .center
-        lable.font = UIFont(name:"Chalkboard SE", size: 28)
+        lable.font          = UIFont(name:"Chalkboard SE", size: 28)
         return lable
     }()
     
@@ -194,8 +190,8 @@ class DetailsPokemonViewController: UIViewController {
     private func selectedPokemonImageConstraint() {
         
         selectedPokemonImage.translatesAutoresizingMaskIntoConstraints = false
-        selectedPokemonImage.centerXAnchor.constraint(equalTo: pokemonProfileView.centerXAnchor).isActive = true
-        selectedPokemonImage.topAnchor.constraint(equalTo: pokemonProfileView.topAnchor, constant: 30).isActive = true
+        selectedPokemonImage.centerXAnchor.constraint(equalTo: pokemonProfileView.centerXAnchor).isActive              = true
+        selectedPokemonImage.topAnchor.constraint(equalTo: pokemonProfileView.topAnchor, constant: 30).isActive        = true
         selectedPokemonImage.widthAnchor.constraint(equalTo: pokemonProfileView.widthAnchor, multiplier: 0.3).isActive = true
         selectedPokemonImage.heightAnchor.constraint(equalTo: selectedPokemonImage.widthAnchor).isActive = true
     }
@@ -205,10 +201,10 @@ class DetailsPokemonViewController: UIViewController {
     private func selectedPokemonNameLableConstraint() {
         
         selectedPokemonNameLable.translatesAutoresizingMaskIntoConstraints = false
-        selectedPokemonNameLable.centerXAnchor.constraint(equalTo: pokemonProfileView.centerXAnchor).isActive = true
+        selectedPokemonNameLable.centerXAnchor.constraint(equalTo: pokemonProfileView.centerXAnchor).isActive           = true
         selectedPokemonNameLable.topAnchor.constraint(equalTo: selectedPokemonImage.bottomAnchor, constant: 5).isActive = true
         selectedPokemonNameLable.widthAnchor.constraint(greaterThanOrEqualTo: pokemonProfileView.widthAnchor, multiplier: 0.4).isActive = true
-        selectedPokemonNameLable.heightAnchor.constraint(equalTo: selectedPokemonImage.widthAnchor).isActive = true
+        selectedPokemonNameLable.heightAnchor.constraint(equalTo: selectedPokemonImage.widthAnchor).isActive            = true
     }
     
     
@@ -230,9 +226,9 @@ class DetailsPokemonViewController: UIViewController {
     private func setupPokemonDetailsScrollViewConstraint() {
         detailsScrollView.translatesAutoresizingMaskIntoConstraints = false
         detailsScrollView.topAnchor.constraint(equalTo: view.topAnchor, constant: 5).isActive = true
-        detailsScrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        detailsScrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        detailsScrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        detailsScrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive        = true
+        detailsScrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive      = true
+        detailsScrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive    = true
     }
     
     
@@ -260,19 +256,28 @@ class DetailsPokemonViewController: UIViewController {
     //    Setting Details StackView Constraint
     private func setupDetailsStackViewConstraint() {
         pokemonDetailsStackView.translatesAutoresizingMaskIntoConstraints = false
-        pokemonDetailsStackView.topAnchor.constraint(equalTo: selectedPokemonNameLable.bottomAnchor, constant: 20).isActive = true
-        pokemonDetailsStackView.bottomAnchor.constraint(equalTo: detailsScrollView.bottomAnchor, constant: -10).isActive = true
-        pokemonDetailsStackView.leadingAnchor.constraint(equalTo: detailsScrollView.leadingAnchor, constant: 20).isActive = true
+        pokemonDetailsStackView.topAnchor.constraint(equalTo: selectedPokemonNameLable.bottomAnchor, constant: 20).isActive  = true
+        pokemonDetailsStackView.bottomAnchor.constraint(equalTo: detailsScrollView.bottomAnchor, constant: -10).isActive     = true
+        pokemonDetailsStackView.leadingAnchor.constraint(equalTo: detailsScrollView.leadingAnchor, constant: 20).isActive    = true
         pokemonDetailsStackView.trailingAnchor.constraint(equalTo: detailsScrollView.trailingAnchor, constant: -20).isActive = true
     }
     
+    
+    
+    private lazy var abilitiesLable : UILabel = {
+        let lable            = UILabel()
+        lable.textColor      = .darkGray
+        lable.font           = UIFont(name:"Chalkboard SE", size: 28)
+        lable.textAlignment  = .center
+        lable.translatesAutoresizingMaskIntoConstraints = false
+        return lable
+    }()
     
     
     private lazy var hpLable : UILabel = {
         let lable            = UILabel(frame: CGRect(x: 0, y: 0, width: 150, height: 50))
         lable.textColor      = .darkGray
         lable.text           = "hp"
-        //        lable.text           = "hp = \(pok[0].base_stat)"
         lable.font           = UIFont(name:"Chalkboard SE", size: 28)
         lable.textAlignment  = .center
         lable.translatesAutoresizingMaskIntoConstraints = false
@@ -412,6 +417,7 @@ class DetailsPokemonViewController: UIViewController {
     
     //    Adding Selected Pokemons Details Progress TabBar to ScrollView
     private func addPokemonDetailsLableToStackView() {
+        pokemonDetailsStackView.addArrangedSubview(abilitiesLable)
         pokemonDetailsStackView.addArrangedSubview(hpLable)
         pokemonDetailsStackView.addArrangedSubview(hpProgressBar)
         
@@ -446,21 +452,18 @@ class DetailsPokemonViewController: UIViewController {
 
     }
     
-     func addToFavoritePokemons() {
-         let favoritePokemon = FavoritePokemonModel(id: preparedID, name: pokemon.name)
-         userDefaultsManager.savedPokemons(pokemon: favoritePokemon)
+    private func setPokemonNameAndAbilitiesText() {
+        selectedPokemonNameLable.text = pokemon?.name.uppercased()
 
-//         allFavoritePokemons?.append(favoritePokemon)
-//         UserDefaulsManager.savedPokemon([allFavoritePokemons])
-         
-//         UserDefaulsManager.shared.savedPokemon(pokemonID: preparedID, pokemonName: pokemon.name)
-//         let userDefaults = UserDefaults()
-//         userDefaults.set(pokemon.name, forKey: "pokemonName")
-//         userDefaults.set(preparedID, forKey: "pokemonID")
-//        guard let favoridPokemon = pokemon else { return }
-//        guard let favoridPokemonID = id else { return }
-//        let favoritPokemonViewController = FavoritePokemonsViewController(pokemon: favoridPokemon, id: favoridPokemonID)
-//        self.present(favoritPokemonViewController, animated: true)
+        guard let firstAbility = pokAbilities?.name else { return }
+//        let secondAbility = pokAbilities.name
+        abilitiesLable.text = "\(firstAbility) and \(firstAbility)"
+    }
+    
+     func addToFavoritePokemons() {
+         let favoritePokemon = [FavoritePokemonModel(id: preparedID, name: pokemon.name)]
+         userDefaultsManager.savedPokemons(pokemon: favoritePokemon)
+         print(favoritePokemon)
     }
     
     
@@ -488,7 +491,7 @@ class DetailsPokemonViewController: UIViewController {
                     guard let self = self else { return }
                     self.pok = receivedPokemonsData.stats
                     self.setProgresses()
-                    print(receivedPokemonsData)
+                    self.setPokemonNameAndAbilitiesText()
                 }
             case .failure(let error):
                 print(error)

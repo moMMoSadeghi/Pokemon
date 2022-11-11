@@ -27,7 +27,7 @@ class PokemonsViewModel {
 //    }
    
     func fetchPokemonsData()  {
-        URLSession.shared.request(url: Constants.pokemonsViewControllerLimit50, expecting: ResourceDataModel.self){
+        URLSession.shared.request(url: Constants.pokemonsViewControllerLimit999, expecting: ResourceDataModel.self){
             [weak self] result in
             switch result {
             case .success(let receivedPokemonsData):

@@ -12,12 +12,19 @@ import Kingfisher
 
 
 
-class PokemonsViewController: UIViewController, UISearchBarDelegate {
+class PokemonsViewController: UIViewController,
+                              UISearchBarDelegate,
+                              UISearchResultsUpdating {
     
-    let searchController    = UISearchController(searchResultsController: nil)
-    var pokemons            = [PokemonDataModel]()
-    var pokemonsViewModel   = PokemonsViewModel()
-    var delegate            : DetailsPokemonViewControllerDelegate?
+    
+    
+    
+    
+    
+    let searchedBarPokemons    = UISearchController(searchResultsController: nil)
+    var pokemons               = [PokemonDataModel]()
+    var searchedPokemons       : [PokemonDataModel]!
+    var pokemonsViewModel      = PokemonsViewModel()
     //    var pokemonsViewModel   = PokemonsViewModel(pokemonsData: <#PokemonDataModel#>)
     
     
@@ -29,6 +36,8 @@ class PokemonsViewController: UIViewController, UISearchBarDelegate {
         super.init(nibName: nil, bundle: nil)
     }
     
+    deinit {}
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -36,7 +45,7 @@ class PokemonsViewController: UIViewController, UISearchBarDelegate {
     override func viewDidAppear(_ animated: Bool) {
         self.tabBarController?.tabBar.isHidden = false
         if #available(iOS 13.0, *) {
-            searchController.searchBar.searchTextField.attributedPlaceholder = NSAttributedString(string: "Enter Search Here", attributes: [NSAttributedString.Key.foregroundColor : UIColor.white])
+            searchedBarPokemons.searchBar.searchTextField.attributedPlaceholder = NSAttributedString(string: "Enter Search Here", attributes: [NSAttributedString.Key.foregroundColor : UIColor.white])
         } else {
             // Fallback on earlier versions
         }
@@ -48,29 +57,23 @@ class PokemonsViewController: UIViewController, UISearchBarDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Pokemons"
-        navigationItem.titleView                     = pokemonSearchBar
-        view.backgroundColor = UIColor(named: "pokemonsViewControllerBackground")
-        pokemonSearchBar.delegate                    = self
-        navigationItem.hidesSearchBarWhenScrolling   = false
-//        pokemons                                     = pokemonsViewModel.pokemonsData
-        configureCollectionView()
-        setupPokemonsTableViewConstraint()
+        //        view.backgroundColor = UIColor(named: "pokemonsViewControllerBackground")
+        pokemonSearchBar.delegate = self
+        //        pokemons                                     = pokemonsViewModel.pokemonsData
+        configureTableView()
         fetchPokemonsData()
+        setupPokemonsTableViewConstraint()
+        ConfigSearchBarController()
         //        pokemonsViewModel.fetchPokemonsData()
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
     }
     
     
-    //MARK: - Configuration for TableView
-    func configureCollectionView() {
-        pokemonsTableView.delegate   = self
-        pokemonsTableView.dataSource = self
-        pokemonsTableView.backgroundColor = UIColor(named: "background")
-    }
+    
+    
     
     
     
@@ -78,7 +81,8 @@ class PokemonsViewController: UIViewController, UISearchBarDelegate {
     //MARK: -   UI Outlets
     
     
-    //            SearchBar
+    
+    /// SearchBar
     private lazy var pokemonSearchBar : UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.placeholder = "Search Pokemons"
@@ -87,24 +91,30 @@ class PokemonsViewController: UIViewController, UISearchBarDelegate {
     }()
     
     
-    //           TableView
+    
+    /// TableView
     private lazy var pokemonsTableView : UITableView = {
-        let table = UITableView()
+        let table             = UITableView()
         table.register(PokemonCell.self, forCellReuseIdentifier: Constants.pokemonCellIdentifier)
         return table
     }()
     
-    
+    ///  Configuration for TableView
+    func configureTableView() {
+        pokemonsTableView.delegate        = self
+        pokemonsTableView.backgroundColor = UIColor(named: "pokemonsViewControllerBackground")
+        pokemonsTableView.dataSource      = self
+    }
     
     
     
     //MARK: -   Methods
-
     
-    //    Fetching Pokemons Data
     
+    
+    /// Fetching Pokemons Data
     func fetchPokemonsData()  {
-        URLSession.shared.request(url: Constants.pokemonsViewControllerLimit50, expecting: ResourceDataModel.self){
+        URLSession.shared.request(url: Constants.pokemonsViewControllerLimit999, expecting: ResourceDataModel.self){
             [weak self] result in
             switch result {
             case .success(let receivedPokemonsData):
@@ -123,43 +133,47 @@ class PokemonsViewController: UIViewController, UISearchBarDelegate {
     //MARK: - Search Bar
     
     
-    func searchBarClicked(_ searchBar : UISearchBar) {
-        searchBar.resignFirstResponder()
-        if let pokemonText = searchBar.text {
-            pokemons = []
-            pokemonsTableView.reloadData()
-            //            pokemonsViewModel.fetchPokemonsData()
-            
-        }
+    /// UISearchResultsUpdating delegation method
+    /// - Parameter searchController: searchBarPokemons
+    func updateSearchResults(for searchController: UISearchController) {
+        let searchBar = searchController.searchBar
+        let searchText = searchBar.text!
+        filteredForSearchedPokemons(searchText: searchText)
     }
     
-    //    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-    //        filteredList = []
-    //        if searchText == "" {
-    //            filteredList = mainViewModel.pokemonList
-    //            backgroundOfImageView.removeFromSuperview()
-    //            collectionView.isHidden = false
-    //        } else {
-    //            for poke in mainViewModel.pokemonList {
-    //                if poke.name.lowercased().contains(searchText.lowercased()) {
-    //                    self.showImageView(isSearchNil: false)
-    //                    filteredList.append(poke)
-    //                } else if searchText.count > 2{
-    //                    self.showImageView(isSearchNil: true)
-    //                }
-    //            }
-    //        }
-    //        self.collectionView.reloadData()
-    //    }
+    
+    /// Filtering searchedPokemons
+    /// - Parameter searchText: searchText description
+    private func filteredForSearchedPokemons(searchText : String) {
+        searchedPokemons = pokemons.filter {
+            pok in
+            if searchedBarPokemons.searchBar.text != "" {
+                let matchedPokemons = pok.name.lowercased().contains(searchText.lowercased())
+                return matchedPokemons
+            } else {
+                return true
+            }
+        }
+        pokemonsTableView.reloadData()
+    }
     
     
-}
-
-//MARK: - Setting Pokemon TableView Constraint
-
-
-extension PokemonsViewController {
     
+    /// Configuration for SearchBar
+    func ConfigSearchBarController() {
+        searchedBarPokemons.loadViewIfNeeded()
+        navigationItem.titleView                       = pokemonSearchBar
+        navigationItem.hidesSearchBarWhenScrolling     = true
+        searchedBarPokemons.searchResultsUpdater       = self
+        searchedBarPokemons.searchBar.returnKeyType    = .done
+        searchedBarPokemons.definesPresentationContext = true
+        searchedBarPokemons.searchBar.delegate         = self
+        searchedBarPokemons.obscuresBackgroundDuringPresentation = false
+    }
+    
+    
+    
+    /// setupPokemonsTableViewConstraint
     private func setupPokemonsTableViewConstraint() {
         view.addSubview(pokemonsTableView)
         pokemonsTableView.translatesAutoresizingMaskIntoConstraints = false
@@ -176,26 +190,56 @@ extension PokemonsViewController {
 extension PokemonsViewController : UITableViewDelegate, UITableViewDataSource {
     
     
-    //MARK: numberOfRowsInSection
+    
+    /// numberOfRowsInSection delegate method
+    /// - Parameters:
+    ///   - tableView: Pokemon TableView
+    ///   - section: section description
+    /// - Returns: Number of Pokemon rows
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return pokemons.count
+        if searchedBarPokemons.isActive {
+            return searchedPokemons.count
+        } else {
+            return pokemons.count
+        }
     }
     
-    //MARK: cellForItemAt
+    
+    /// cellForItemAt contents
+    /// - Parameters:
+    ///   - tableView: Pokemon TableView
+    ///   - indexPath: Selected row
+    /// - Returns: Contents for each row
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.pokemonCellIdentifier, for: indexPath) as? PokemonCell else { return UITableViewCell() }
-        cell.fillPokemonsData(pokName: pokemons[indexPath.row].name, pokID: "\(indexPath.row + 1)")
+        let thisPokemon : PokemonDataModel!
+        if searchedBarPokemons.isActive {
+            thisPokemon = searchedPokemons[indexPath.row]
+        } else {
+            thisPokemon = pokemons[indexPath.row]
+        }
+        cell.fillPokemonsData(pokName: thisPokemon.name, pokID: "\(indexPath.row + 1)")
         return cell
     }
     
     
-    //     TableViewCell height
+    //
+    
+    /// TableViewCell Height
+    /// - Parameters:
+    ///   - tableView: Pokemon TableView
+    ///   - indexPath: Each row
+    /// - Returns: Height for each row
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 250
     }
     
     
-    //MARK:  didSelectItemAt
+    
+    /// didSelectItemAt to show after Selected
+    /// - Parameters:
+    ///   - tableView: Pokemon TableView
+    ///   - indexPath: Each row
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let detailsViewController = DetailsPokemonViewController(pokemon: PokemonDataModel(name: pokemons[indexPath.row].name, url: pokemons[indexPath.row].url), id: indexPath.row)

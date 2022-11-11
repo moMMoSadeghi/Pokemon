@@ -12,10 +12,36 @@ import Foundation
 class UserDefaulsManager : Codable {
     
     
-    var favoritePokemons : [FavoritePokemonModel]?
+    
+//    func setObject<Object>(_ object: Object, forKey: String) where Object: Encodable
+//    {
+//        let encoder = JSONEncoder()
+//        do {
+//            let data = try encoder.encode(object)
+//            set(data, forKey: forKey)
+//            synchronize()
+//        } catch let encodeErr {
+//            print("Failed to encode object:", encodeErr)
+//        }
+//    }
+//
+//    func getObject<Object>(forKey: String, castTo type: Object.Type) -> Object? where Object: Decodable
+//    {
+//        guard let data = data(forKey: forKey) else { return nil }
+//        let decoder = JSONDecoder()
+//        do {
+//            let object = try decoder.decode(type, from: data)
+//            return object
+//        } catch let decodeError{
+//            print("Failed to decode object:" , decodeError)
+//            return nil
+//        }
+//    }
     
     
-    func savedPokemons(pokemon : FavoritePokemonModel) {
+
+
+    func savedPokemons(pokemon : [FavoritePokemonModel]) {
         do {
             let encoder = JSONEncoder()
             let data = try encoder.encode(pokemon)
@@ -25,25 +51,22 @@ class UserDefaulsManager : Codable {
             print("Unable to Encode Note (\(error))")
         }
     }
-    
-    
-     func retreivedPokemons() -> [FavoritePokemonModel] {
-        
+
+
+    func retreivedPokemons() -> [FavoritePokemonModel] {
+
+         var favoritePokemons : [FavoritePokemonModel]!
         if let data = UserDefaults.standard.data(forKey: "favoritePokemonObject") {
             do {
                 let decoder = JSONDecoder()
                 let pokemons = try decoder.decode([FavoritePokemonModel].self, from: data)
-                self.favoritePokemons = pokemons
-                print(pokemons)
+                favoritePokemons = pokemons
             } catch {
-                print("Unable to Decode Notes (\(error))")
+                print("Unable to Decode Pokemons (\(error))")
             }
         }
-         return favoritePokemons ?? []
+         return favoritePokemons
     }
-   
-    
-    
 }
 
 
