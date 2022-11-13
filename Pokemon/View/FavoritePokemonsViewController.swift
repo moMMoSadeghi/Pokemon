@@ -24,6 +24,7 @@ class FavoritePokemonsViewController: UIViewController, UITabBarDelegate, UITabl
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title           = "Favorite Pokemons"
+        view.backgroundColor = .systemGray5
         setupFavoritePokemonsTableView()
 //        recivingSavedPokemonsFromUserDefaults()
     }
@@ -156,6 +157,7 @@ extension FavoritePokemonsViewController {
         let configuration = UISwipeActionsConfiguration(actions: [deleteAction])
         return configuration
     }
+    
 }
 
 

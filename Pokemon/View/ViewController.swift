@@ -9,31 +9,37 @@ import UIKit
 
 class ViewController: UIViewController {
     
-//    let networkManager = NetworkManager()
+    
+    
     let mainTabBarController = UITabBarController()
+    
+   
+    
+    
+    //MARK: - Application LifeCycle
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureTabBarController()
     }
     
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         setupTabBarController()
-        view.backgroundColor = .black
-        
     }
     
     
+    ///  Configuring TabBarController
     private func configureTabBarController() {
         mainTabBarController.tabBar.backgroundColor = .systemGray5
-        mainTabBarController.tabBar.tintColor = .white
+        mainTabBarController.tabBar.tintColor       = .white
     }
     
+    
+    /// Setting up TabBarConstraint
     private func setupTabBarController() {
-        
-//        let viewModel = PokemonsViewModel(networkManaget: networkManager)
-        
         let pokemonsViewController = UINavigationController(rootViewController: PokemonsViewController())
         pokemonsViewController.tabBarItem.image = UIImage(systemName: "folder")
         pokemonsViewController.tabBarItem.title = "Pokemons"

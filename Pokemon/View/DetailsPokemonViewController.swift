@@ -59,7 +59,6 @@ class DetailsPokemonViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor =  UIColor(named: "detailsViewControllerBackground")
         view.layer.cornerRadius = 15
-        
         configureTabBarStackView()
         configurePokemonDetailsScrollView()
         configurePokemonProfileUIView()

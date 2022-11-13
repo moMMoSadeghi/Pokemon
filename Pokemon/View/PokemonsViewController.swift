@@ -60,6 +60,7 @@ class PokemonsViewController: UIViewController,
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Pokemons"
+        view.backgroundColor = .systemGray5
         view.addSubview(activityIndicator)
         //        pokemons             = pokemonsViewModel.pokemonsData
         configureTableView()
@@ -158,7 +159,8 @@ class PokemonsViewController: UIViewController,
         pokemonsTableView.reloadData()
     }
 
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+     /// SearchBar Delegate Method
+     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         searchedPokemons = []
         if searchText == "" {
             searchedPokemons = pokemons
