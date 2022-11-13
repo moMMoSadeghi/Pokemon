@@ -13,7 +13,7 @@ class PokemonsViewModel {
     
 //    let networkManager      : NetworkManager
     var pokemonsData          : [PokemonDataModel]?
-    let pokemonNetworkManager = PokemonNetworkMananger()
+//    let pokemonNetworkManager = PokemonNetworkMananger()
     
 //    init() {
 //        self.pokemonsData = 

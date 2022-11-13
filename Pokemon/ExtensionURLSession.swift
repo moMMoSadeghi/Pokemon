@@ -9,10 +9,6 @@ import Foundation
 
 
 
-enum CustomError : Error {
-    case invalidURL
-    case invalidData
-}
 
 extension URLSession {
     

@@ -23,19 +23,11 @@ class FavoriteCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         favoritePokemonNameLableConstraint()
-        favoritePokemonImageConstraint()
+//        favoritePokemonImageConstraint()
         contentView.layer.cornerRadius = 15
         contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
     }
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-    }
-    
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        
-    }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -52,10 +44,13 @@ class FavoriteCell: UITableViewCell {
     
     
     
+   
+    
+    
     
     //MARK: -   UI Outlets
     
-    //    Creating favoritePokemonImage
+    /// Creating favoritePokemonImage
     private lazy var favoritePokemonImage     : UIImageView = {
         let image                             = UIImageView()
         image.contentMode                     = .scaleAspectFit
@@ -66,10 +61,11 @@ class FavoriteCell: UITableViewCell {
     }()
     
     
-    //    Creating favoritePokemonImageIcon
+    /// Creating favoritePokemonImageIcon
     private lazy var favoritePokemonImageIcon : UIImageView = {
         let image                             = UIImageView()
         image.contentMode                     = .scaleAspectFit
+        image.frame.size = CGSize(width: 10, height: 10)
         image.clipsToBounds                   = false
         image.tintColor                       = .systemRed
         image.image                           = UIImage(systemName: "heart.fill")
@@ -78,7 +74,7 @@ class FavoriteCell: UITableViewCell {
     
     
     
-    //    Creating favoritePokemonName
+    /// Creating favoritePokemonName
     private lazy var favoritePokemonName      : UILabel = {
         let lable                             = UILabel()
         lable.textColor                       = .white
@@ -89,7 +85,7 @@ class FavoriteCell: UITableViewCell {
     
     
     
-    //    Configuring configureMainStackView
+    /// Configuring configureMainStackView
     private func configureMainStackView() {
         contentView.addSubview(favoriteCellStackView)
         favoriteCellStackView.axis         = .horizontal
@@ -100,7 +96,7 @@ class FavoriteCell: UITableViewCell {
     }
     
     
-    //    Configuring setupMainStackViewConstraint
+    /// Configuring setupMainStackViewConstraint
     private func setupMainStackViewConstraint() {
         favoriteCellStackView.translatesAutoresizingMaskIntoConstraints = false
         favoriteCellStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10).isActive = true
@@ -110,7 +106,7 @@ class FavoriteCell: UITableViewCell {
     }
     
     
-    //    Configuring addPokemonImageAndNameToStackView
+    /// Configuring addPokemonImageAndNameToStackView
     private func addPokemonImageAndNameToStackView() {
         favoriteCellStackView.addArrangedSubview(favoritePokemonImage)
         favoriteCellStackView.addArrangedSubview(favoritePokemonName)
@@ -122,30 +118,16 @@ class FavoriteCell: UITableViewCell {
     
     
     
-    private func favoritePokemonImageConstraint() {
-        favoritePokemonImage.translatesAutoresizingMaskIntoConstraints = false
-        favoritePokemonImage.centerYAnchor.constraint(equalTo: favoriteCellStackView.centerYAnchor).isActive = true
-        //        favoritePokemonImage.widthAnchor.constraint(greaterThanOrEqualToConstant: 250).isActive = true
-        //        favoritePokemonImage.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
-        
-        //        favoritePokemonImage.topAnchor.constraint(equalTo: favoriteCellStackView.topAnchor, constant: 5).isActive = true
-        //        favoritePokemonImage.bottomAnchor.constraint(equalTo: favoriteCellStackView.bottomAnchor, constant: -5).isActive = true
-        //        favoritePokemonImage.leadingAnchor.constraint(equalTo: favoriteCellStackView.leadingAnchor, constant: 10).isActive = true
-        //        favoritePokemonImage.widthAnchor.constraint(greaterThanOrEqualToConstant: 120).isActive = true
-        //        favoritePokemonImage.heightAnchor.constraint(equalTo: favoritePokemonImage.widthAnchor).isActive = true
-        //
-    }
-    
+//    private func favoritePokemonImageConstraint() {
+//        favoritePokemonImage.translatesAutoresizingMaskIntoConstraints = false
+//        favoritePokemonImage.centerYAnchor.constraint(equalTo: favoriteCellStackView.centerYAnchor).isActive = true
+//    }
+//
     private func favoritePokemonNameLableConstraint() {
-        
+
         favoritePokemonName.translatesAutoresizingMaskIntoConstraints = false
-        favoritePokemonName.centerXAnchor.constraint(equalTo: favoriteCellStackView.centerXAnchor).isActive = true
-        //        favoritePokemonName.topAnchor.constraint(equalTo: favoriteCellStackView.topAnchor, constant: 2).isActive = true
-        //        favoritePokemonName.bottomAnchor.constraint(equalTo: favoriteCellStackView.bottomAnchor, constant: 2).isActive = true
-        //        favoritePokemonName.leadingAnchor.constraint(equalTo: favoritePokemonImage.trailingAnchor, constant: 2).isActive = true
-        //        favoritePokemonName.trailingAnchor.constraint(equalTo: favoriteCellStackView.trailingAnchor, constant: 2).isActive = true
-        //        favoritePokemonName.widthAnchor.constraint(greaterThanOrEqualToConstant: 200).isActive = true
-        //        favoritePokemonName.heightAnchor.constraint(equalTo: favoritePokemonImage.widthAnchor).isActive = true
+//        favoritePokemonName.centerXAnchor.constraint(equalTo: favoriteCellStackView.centerXAnchor).isActive = true
+        favoritePokemonName.widthAnchor.constraint(greaterThanOrEqualToConstant: 200).isActive = true
     }
     
     
@@ -163,3 +145,31 @@ class FavoriteCell: UITableViewCell {
         
     }
 }
+
+
+
+
+
+//MARK: -   Extension
+
+
+extension FavoriteCell {
+    
+    
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+    }
+
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+        
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        favoritePokemonImage.image = nil
+    }
+
+}
+

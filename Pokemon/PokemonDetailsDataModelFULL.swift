@@ -10,15 +10,6 @@ import Foundation
 
 
 
-struct DetailsPokemonDataModel : Codable {
-    var sprites : PokemonSprites
-    var order : Int
-}
-
-struct PokemonSprites : Codable {
-    var front_default : String?
-}
-
 //
 //// MARK: - Welcome
 //struct PokemonDetailsDataModel: Codable {

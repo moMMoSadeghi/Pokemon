@@ -10,12 +10,42 @@ import Kingfisher
 
 class PokemonCell: UITableViewCell {
     
-   
     
     
     
     
-    //    Pokemon Image in the Cell
+    //MARK: - Application LifeCycle
+    
+    /// Layout SubViews
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        contentView.layer.cornerRadius = 20
+        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
+        pokImageConstraint()
+        pokNameLableConstraint()
+    }
+    
+    /// Initializing Cell
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        contentView.addSubview(pokImage)
+        contentView.addSubview(pokNameLable)
+        contentView.backgroundColor = Colors.cellColors.randomElement() as? UIColor
+        
+    }
+    
+    /// Required Cell NSCoder
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    
+    
+    //MARK: -   UI Outlets
+    
+    
+    
+    /// Creating Pokemon Image Cell
     private lazy var pokImage       : UIImageView = {
         let image                   = UIImageView(frame: CGRectMake(0, 0, 100, 100))
         image.contentMode           = .scaleAspectFit
@@ -27,9 +57,9 @@ class PokemonCell: UITableViewCell {
         return image
     }()
     
-
     
-    //    Pokemon Name lable in the Cell
+    
+    /// Creating Pokemon NameLable Cell
     private lazy var pokNameLable   : UILabel = {
         let lable                   = UILabel()
         lable.textColor             = .white
@@ -40,32 +70,7 @@ class PokemonCell: UITableViewCell {
     
     
     
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        contentView.layer.cornerRadius = 20
-        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
-        pokImageConstraint()
-        pokNameLableConstraint()
-    }
-    
-    func fillPokemonsData(pokName : String, pokID: String) {
-        pokNameLable.text = "#\(pokID). \(pokName)"
-        pokImage.kf.setImage(with: URL(string: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/\(pokID).png"), placeholder: nil, options: nil, progressBlock: nil, completionHandler: nil
-//                             { result in
-//            switch result {
-//            case .success(let value):
-//                    print("Image: \(value.image). Got from: \(value.cacheType)")
-//            case .failure(let error):
-//                    print("Error: \(error)")
-//            }
-//        }
-        )
-    }
-    
-    
-    
-    //    Set Pokemon Image Constraint
+    /// Set Pokemon Image Constraint
     private func pokImageConstraint() {
         
         pokImage.translatesAutoresizingMaskIntoConstraints                                                        = false
@@ -77,7 +82,7 @@ class PokemonCell: UITableViewCell {
     
     
     
-    //    Set Pokemon Name Lable Constraint
+    /// Set Pokemon Name Lable Constraint
     private func pokNameLableConstraint() {
         
         pokNameLable.translatesAutoresizingMaskIntoConstraints                                                       = false
@@ -88,17 +93,33 @@ class PokemonCell: UITableViewCell {
         
     }
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        contentView.addSubview(pokImage)
-        contentView.addSubview(pokNameLable)
-        contentView.backgroundColor = Colors.cellColors.randomElement() as? UIColor
-        
+    
+    
+    
+    //MARK: -   Methods
+    
+    
+    
+    /// Filling Cell Data
+    func fillPokemonsData(pokName : String, pokID: String) {
+        pokNameLable.text = "#\(pokID). \(pokName)"
+        pokImage.kf.setImage(with: URL(string: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/\(pokID).png"), placeholder: nil, options: nil, progressBlock: nil, completionHandler: nil
+        )
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    
+    
+    
+}
+
+
+
+
+//MARK: -   Extension
+
+extension PokemonCell {
+    
+    
     
     
     override func awakeFromNib() {
@@ -114,6 +135,5 @@ class PokemonCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
         
     }
-
     
 }

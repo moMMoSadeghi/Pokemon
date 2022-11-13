@@ -28,10 +28,10 @@ class DetailsPokemonViewController: UIViewController {
     
     var pokemon                 : PokemonDataModel!
     var id                      : Int!
-    var preparedID              : Int           {
+    var preparedID              : Int  {
         ((id ?? 0) + 1)
     }
-    var pok                     = [Stats]()
+    var stats                   = [Stats]()
     var pokAbilities            : [Ability]?
     var detailsPokemonViewModel = DetailsPokemonViewModel()
     var allFavoritePokemons     : [FavoritePokemonModel]?
@@ -275,7 +275,7 @@ class DetailsPokemonViewController: UIViewController {
     ///    Creating Selected Pokemon hpLable
     private lazy var hpLable : UILabel = {
         let lable            = UILabel(frame: CGRect(x: 0, y: 0, width: 150, height: 50))
-        lable.textColor      = .darkGray
+        lable.textColor      = UIColor(named: "DetailsLable")
         lable.text           = "hp"
         lable.font           = UIFont(name:"Chalkboard SE", size: 28)
         lable.textAlignment  = .center
@@ -300,7 +300,7 @@ class DetailsPokemonViewController: UIViewController {
     ///    Creating Selected Pokemon attackLable
     private lazy var attackLable : UILabel = {
         let lable                = UILabel(frame: CGRect(x: 0, y: 0, width: 150, height: 50))
-        lable.textColor          = .darkGray
+        lable.textColor          = UIColor(named: "DetailsLable")
         lable.text               = "attack"
         lable.font               = UIFont(name:"Chalkboard SE", size: 28)
         lable.textAlignment      = .center
@@ -323,7 +323,7 @@ class DetailsPokemonViewController: UIViewController {
     ///    Creating Selected Pokemon defenseLable
     private lazy var defenseLable        : UILabel = {
         let lable                        = UILabel(frame: CGRect(x: 0, y: 0, width: 150, height: 50))
-        lable.textColor                  = .darkGray
+        lable.textColor                  = UIColor(named: "DetailsLable")
         lable.text                       = "defense"
         lable.font                       = UIFont(name:"Chalkboard SE", size: 28)
         lable.adjustsFontSizeToFitWidth  = true
@@ -346,7 +346,7 @@ class DetailsPokemonViewController: UIViewController {
     ///    Creating Selected Pokemon specialAttackLable
     private lazy var specialAttackLable : UILabel = {
         let lable                       = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 21))
-        lable.textColor                 = .darkGray
+        lable.textColor                 = UIColor(named: "DetailsLable")
         lable.text                      = "special attack"
         lable.font                      = UIFont(name:"Chalkboard SE", size: 28)
         lable.textAlignment             = .center
@@ -370,7 +370,7 @@ class DetailsPokemonViewController: UIViewController {
     ///    Creating Selected Pokemon specialDefenseLable
     private lazy var specialDefenseLable : UILabel = {
         let lable                        = UILabel(frame: CGRect(x: 0, y: 0, width: 150, height: 50))
-        lable.textColor                  = .darkGray
+        lable.textColor                  = UIColor(named: "DetailsLable")
         lable.text                       = "special defense"
         lable.font                       = UIFont(name:"Chalkboard SE", size: 28)
         lable.textAlignment              = .center
@@ -392,7 +392,7 @@ class DetailsPokemonViewController: UIViewController {
     ///    Creating Selected Pokemon speedLable
     private lazy var speedLable : UILabel = {
         let lable               = UILabel(frame: CGRect(x: 0, y: 0, width: 150, height: 50))
-        lable.textColor         = .darkGray
+        lable.textColor         = UIColor(named: "DetailsLable")
         lable.text              = "speed"
         lable.font              = UIFont(name:"Chalkboard SE", size: 28)
         lable.textAlignment     = .center
@@ -450,10 +450,14 @@ class DetailsPokemonViewController: UIViewController {
                                          placeholder: nil, options: nil, progressBlock: nil, completionHandler: nil
         )
         selectedPokemonNameLable.text = pokemon?.name.uppercased()
-        let firstAbility = pokAbilities?[0].ability.name
-        let secondAbility = pokAbilities?[1].ability.name
-        abilitiesLable.text = "\(firstAbility ?? "Unknown")    \(secondAbility ?? "Unknown")"
-        
+        guard let firstAbility = pokAbilities?[0].ability.name else { return }
+        if ( pokAbilities?[1].ability.name != nil) {
+            let secondAbility = pokAbilities?[1].ability.name
+            abilitiesLable.text = "\(firstAbility)    \(secondAbility ?? "")"
+        } else {
+            abilitiesLable.text = "\(firstAbility)"
+            
+        }
     }
     
     
@@ -489,7 +493,7 @@ class DetailsPokemonViewController: UIViewController {
             case .success(let receivedPokemonsData):
                 DispatchQueue.main.async {
                     guard let self = self else { return }
-                    self.pok = receivedPokemonsData.stats
+                    self.stats = receivedPokemonsData.stats
                     self.pokAbilities = receivedPokemonsData.abilities
                     self.setProgresses()
                     self.setProfileImageAndNameAndAbilities()
@@ -520,12 +524,12 @@ class DetailsPokemonViewController: UIViewController {
     
     /// Setting up Selected ProgressBar Values
     private func setProgresses() {
-        let hp              : Int = pok[0].base_stat
-        let attack          : Int = pok[1].base_stat
-        let defense         : Int = pok[2].base_stat
-        let specialAttack   : Int = pok[3].base_stat
-        let specialDefense  : Int = pok[4].base_stat
-        let speed           : Int = pok[5].base_stat
+        let hp              : Int = stats[0].base_stat
+        let attack          : Int = stats[1].base_stat
+        let defense         : Int = stats[2].base_stat
+        let specialAttack   : Int = stats[3].base_stat
+        let specialDefense  : Int = stats[4].base_stat
+        let speed           : Int = stats[5].base_stat
         
         hpProgressBar.setProgress(formatProgressesValues(value: hp), animated: true)
         attackProgressBar.setProgress(formatProgressesValues(value: attack), animated: true)
@@ -533,10 +537,6 @@ class DetailsPokemonViewController: UIViewController {
         specialAttackProgressBar.setProgress(formatProgressesValues(value: specialAttack), animated: true)
         specialDefenseProgressBar.setProgress(formatProgressesValues(value: specialDefense), animated: true)
         speedProgressBar.setProgress(formatProgressesValues(value: speed), animated: true)
-        
-        
     }
-    
-    
     
 }

@@ -24,9 +24,8 @@ class FavoritePokemonsViewController: UIViewController, UITabBarDelegate, UITabl
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title           = "Favorite Pokemons"
-        view.backgroundColor = UIColor(named: "favoriteViewControllerBackground")
         setupFavoritePokemonsTableView()
-        recivingSavedPokemonsFromUserDefaults()
+//        recivingSavedPokemonsFromUserDefaults()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -52,7 +51,7 @@ class FavoritePokemonsViewController: UIViewController, UITabBarDelegate, UITabl
     /// Setting up FavoritePokemonTableViewConstraints
     private func setupFavoritePokemonsTableViewConstraint() {
         favoritePokemonTableView.translatesAutoresizingMaskIntoConstraints = false
-        favoritePokemonTableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        favoritePokemonTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
         favoritePokemonTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -10).isActive = true
         favoritePokemonTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 10).isActive = true
         favoritePokemonTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: -10).isActive = true
@@ -73,8 +72,7 @@ class FavoritePokemonsViewController: UIViewController, UITabBarDelegate, UITabl
     func recivingSavedPokemonsFromUserDefaults() {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
-            let newPokemon = self.userDefaulfManager.retreivedPokemons()
-            self.favoritePokemons.append(contentsOf: newPokemon)
+            self.favoritePokemons = self.userDefaulfManager.retreivedPokemons()
             print(self.favoritePokemons)
             self.favoritePokemonTableView.reloadData()
         }
@@ -85,12 +83,17 @@ class FavoritePokemonsViewController: UIViewController, UITabBarDelegate, UITabl
     
     
     
-    
+    /// Deleting Saved Pokemons from UserDefaults
     func deleteSwipedPokemon(id : Int, name: String) {
         let selectedPokemon = FavoritePokemonModel(id: id, name: name)
         userDefaulfManager.deletePokemons(pokemon: selectedPokemon)
-        favoritePokemonTableView.reloadData()
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            print(self.favoritePokemons)
+            self.favoritePokemonTableView.reloadData()
+        }
     }
+    
     
 }
 
@@ -122,6 +125,7 @@ extension FavoritePokemonsViewController {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.favoritePokemonCellIdentifier, for: indexPath) as? FavoriteCell else { return UITableViewCell() }
         cell.fillFavoritePokemonData(pokID: "\(favoritePokemons[indexPath.row].id)", pokName: favoritePokemons[indexPath.row].name)
+        cell.isUserInteractionEnabled = false
         return cell
     }
     

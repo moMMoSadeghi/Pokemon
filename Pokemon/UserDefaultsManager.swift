@@ -12,6 +12,7 @@ import Foundation
 class UserDefaulsManager : Codable {
     
     
+    /// Save Pokemons to UserDefaults
     func savedPokemons(pokemon : FavoritePokemonModel) {
         var retrivedPokemons = retreivedPokemons()
         if retrivedPokemons.contains(where: {
@@ -33,9 +34,11 @@ class UserDefaulsManager : Codable {
     }
     
     
+    
+    /// Retrieve Saved Pokemons from UserDefaults
     func retreivedPokemons() -> [FavoritePokemonModel] {
         
-        var favoritePokemons : [FavoritePokemonModel] = []
+        var favoritePokemons : [FavoritePokemonModel]?
         if let data = UserDefaults.standard.data(forKey: "favoritePokemonsObject") {
             do {
                 let decoder = JSONDecoder()
@@ -45,12 +48,15 @@ class UserDefaulsManager : Codable {
                 print("Unable to Decode Pokemons (\(error))")
             }
         }
-        return favoritePokemons
+        return favoritePokemons ?? []
     }
     
     
+    
+    
+    /// Delete Selected Pokemon from UserDefaults and Resave them
     func deletePokemons(pokemon : FavoritePokemonModel) {
-        
+
         var currentPokemons = retreivedPokemons()
         if currentPokemons.contains(where: {
             $0.name == pokemon.name

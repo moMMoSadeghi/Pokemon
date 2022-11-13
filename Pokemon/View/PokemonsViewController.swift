@@ -20,7 +20,7 @@ class PokemonsViewController: UIViewController,
     
     
     
-    
+  
     let searchedBarPokemons    = UISearchController()
     var pokemons               = [PokemonDataModel]()
     var searchedPokemons       : [PokemonDataModel]!
@@ -46,12 +46,12 @@ class PokemonsViewController: UIViewController,
     }
     
     override func viewDidAppear(_ animated: Bool) {
-//        self.tabBarController?.tabBar.isHidden = false
-//        if #available(iOS 13.0, *) {
-//            searchedBarPokemons.searchBar.searchTextField.attributedPlaceholder = NSAttributedString(string: "Enter Search Here", attributes: [NSAttributedString.Key.foregroundColor : UIColor.white])
-//        } else {
-//            // Fallback on earlier versions
-//        }
+        self.tabBarController?.tabBar.isHidden = false
+        if #available(iOS 13.0, *) {
+            searchedBarPokemons.searchBar.searchTextField.attributedPlaceholder = NSAttributedString(string: "Search Pokemons", attributes: [NSAttributedString.Key.foregroundColor : UIColor.white])
+        } else {
+            print("Device is not compatible!")
+        }
         
     }
     
@@ -61,7 +61,6 @@ class PokemonsViewController: UIViewController,
         super.viewDidLoad()
         self.title = "Pokemons"
         view.addSubview(activityIndicator)
-        //        view.backgroundColor = UIColor(named: "pokemonsViewControllerBackground")
         //        pokemons             = pokemonsViewModel.pokemonsData
         configureTableView()
         fetchPokemonsData()
@@ -93,7 +92,6 @@ class PokemonsViewController: UIViewController,
     
     ///  Configuration for TableView
     func configureTableView() {
-        
         pokemonsTableView.delegate        = self
         pokemonsTableView.backgroundColor = UIColor(named: "pokemonsViewControllerBackground")
         pokemonsTableView.dataSource      = self
@@ -104,7 +102,7 @@ class PokemonsViewController: UIViewController,
     private let activityIndicator : UIActivityIndicatorView = {
         let activity = UIActivityIndicatorView()
         activity.translatesAutoresizingMaskIntoConstraints = false
-        activity.hidesWhenStopped = true
+//        activity.hidesWhenStopped = true
         activity.color = UIColor(named: "green")
         return activity
     }()
@@ -185,7 +183,6 @@ class PokemonsViewController: UIViewController,
         searchedBarPokemons.searchResultsUpdater       = self
         searchedBarPokemons.searchBar.delegate         = self
         searchedBarPokemons.definesPresentationContext = true
-        searchedBarPokemons.searchBar.placeholder      = "Search Pokemons"
         searchedBarPokemons.obscuresBackgroundDuringPresentation = false
     }
     
@@ -195,7 +192,7 @@ class PokemonsViewController: UIViewController,
     private func setupPokemonsTableViewConstraint() {
         view.addSubview(pokemonsTableView)
         pokemonsTableView.translatesAutoresizingMaskIntoConstraints = false
-        pokemonsTableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        pokemonsTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
         pokemonsTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -10).isActive = true
         pokemonsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 10).isActive = true
         pokemonsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: -10).isActive = true
@@ -233,13 +230,13 @@ extension PokemonsViewController : UITableViewDelegate, UITableViewDataSource {
     /// - Returns: Contents for each row
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.pokemonCellIdentifier, for: indexPath) as? PokemonCell else { return UITableViewCell() }
-        let thisPokemon : PokemonDataModel!
-        if searchedBarPokemons.isActive {
-            thisPokemon = searchedPokemons[indexPath.row]
-        } else {
-            thisPokemon = pokemons[indexPath.row]
-        }
-        cell.fillPokemonsData(pokName: thisPokemon.name, pokID: "\(indexPath.row + 1)")
+//        let thisPokemon : PokemonDataModel!
+//        if searchedBarPokemons.isActive {
+//            cell.fillPokemonsData(pokName: searchedBarPokemons[indexPath.row].name, pokID: "\(indexPath.row + 1)")
+//            thisPokemon = searchedPokemons[indexPath.row]
+//        } else {
+        cell.fillPokemonsData(pokName: pokemons[indexPath.row].name, pokID: "\(indexPath.row + 1)")
+      
         return cell
     }
     

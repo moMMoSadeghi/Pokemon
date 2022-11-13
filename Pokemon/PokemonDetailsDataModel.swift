@@ -26,5 +26,5 @@ struct Ability   : Codable {
 }
 
 struct Species : Codable {
-    let name   : String
+    let name   : String?
 }
