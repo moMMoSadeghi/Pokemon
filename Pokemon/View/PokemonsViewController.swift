@@ -20,7 +20,7 @@ class PokemonsViewController: UIViewController,
     
     
     
-  
+    
     let searchedBarPokemons    = UISearchController()
     var pokemons               = [PokemonDataModel]()
     var searchedPokemons       : [PokemonDataModel]!
@@ -28,8 +28,8 @@ class PokemonsViewController: UIViewController,
     //    var pokemonsViewModel   = PokemonsViewModel(pokemonsData: <#PokemonDataModel#>)
     
     
-   
-
+    
+    
     
     init() {
         //        init(viewModel : PokemonsViewModel) {
@@ -103,14 +103,13 @@ class PokemonsViewController: UIViewController,
     private let activityIndicator : UIActivityIndicatorView = {
         let activity = UIActivityIndicatorView()
         activity.translatesAutoresizingMaskIntoConstraints = false
-//        activity.hidesWhenStopped = true
+        //        activity.hidesWhenStopped = true
         activity.color = UIColor(named: "green")
         return activity
     }()
     
     
     //MARK: -   Methods
-    
     
     
     /// Fetching Pokemons Data
@@ -142,8 +141,8 @@ class PokemonsViewController: UIViewController,
         guard let searchBarText = searchedBarPokemons.searchBar.text else { return }
         filteredForSearchedPokemons(searchText: searchBarText)
     }
-
-
+    
+    
     /// Filtering searchedPokemons
     /// - Parameter searchText: searchText description
     private func filteredForSearchedPokemons(searchText : String) {
@@ -158,9 +157,9 @@ class PokemonsViewController: UIViewController,
         }
         pokemonsTableView.reloadData()
     }
-
-     /// SearchBar Delegate Method
-     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+    
+    /// SearchBar Delegate Method
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         searchedPokemons = []
         if searchText == "" {
             searchedPokemons = pokemons
@@ -174,8 +173,8 @@ class PokemonsViewController: UIViewController,
         }
         self.pokemonsTableView.reloadData()
     }
-
-   
+    
+    
     
     /// Configuration for SearchBar
     func ConfigSearchBarController() {
@@ -232,13 +231,13 @@ extension PokemonsViewController : UITableViewDelegate, UITableViewDataSource {
     /// - Returns: Contents for each row
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.pokemonCellIdentifier, for: indexPath) as? PokemonCell else { return UITableViewCell() }
-//        let thisPokemon : PokemonDataModel!
-//        if searchedBarPokemons.isActive {
-//            cell.fillPokemonsData(pokName: searchedBarPokemons[indexPath.row].name, pokID: "\(indexPath.row + 1)")
-//            thisPokemon = searchedPokemons[indexPath.row]
-//        } else {
+        //        let thisPokemon : PokemonDataModel!
+        //        if searchedBarPokemons.isActive {
+        //            cell.fillPokemonsData(pokName: searchedBarPokemons[indexPath.row].name, pokID: "\(indexPath.row + 1)")
+        //            thisPokemon = searchedPokemons[indexPath.row]
+        //        } else {
         cell.fillPokemonsData(pokName: pokemons[indexPath.row].name, pokID: "\(indexPath.row + 1)")
-      
+        
         return cell
     }
     

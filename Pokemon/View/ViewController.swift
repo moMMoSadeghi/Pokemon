@@ -13,11 +13,11 @@ class ViewController: UIViewController {
     
     let mainTabBarController = UITabBarController()
     
-   
+    
     
     
     //MARK: - Application LifeCycle
-
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,6 +30,9 @@ class ViewController: UIViewController {
         setupTabBarController()
     }
     
+    
+    
+    //MARK: - Methods
     
     ///  Configuring TabBarController
     private func configureTabBarController() {
@@ -45,7 +48,7 @@ class ViewController: UIViewController {
         pokemonsViewController.tabBarItem.title = "Pokemons"
         pokemonsViewController.tabBarItem.selectedImage = UIImage(systemName: "folder.fill")
         
-        let favoritePokemonsViewController = UINavigationController(rootViewController: FavoritePokemonsViewController()) 
+        let favoritePokemonsViewController = UINavigationController(rootViewController: FavoritePokemonsViewController())
         favoritePokemonsViewController.tabBarItem.image = UIImage(systemName: "heart")
         favoritePokemonsViewController.tabBarItem.selectedImage = UIImage(systemName: "heart.fill")
         favoritePokemonsViewController.tabBarItem.title = "Favorite Pokemons"

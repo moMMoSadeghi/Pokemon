@@ -26,7 +26,7 @@ class FavoritePokemonsViewController: UIViewController, UITabBarDelegate, UITabl
         self.title           = "Favorite Pokemons"
         view.backgroundColor = .systemGray5
         setupFavoritePokemonsTableView()
-//        recivingSavedPokemonsFromUserDefaults()
+        //        recivingSavedPokemonsFromUserDefaults()
     }
     
     override func viewDidAppear(_ animated: Bool) {

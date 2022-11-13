@@ -1,19 +1,19 @@
+////
+////  DetailsPokemonViewModel.swift
+////  Pokemon
+////
+////  Created by iMommo on 08/11/22.
+////
 //
-//  DetailsPokemonViewModel.swift
-//  Pokemon
+//import Foundation
 //
-//  Created by iMommo on 08/11/22.
 //
-
-import Foundation
-
-
-
-class DetailsPokemonViewModel {
-    
-    
-    
-}
-
-
-
+//
+//class DetailsPokemonViewModel {
+//
+//
+//
+//}
+//
+//
+//
